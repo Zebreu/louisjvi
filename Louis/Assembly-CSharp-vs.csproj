@@ -49,10 +49,10 @@
      <Compile Include="Assets\Scripts\GameControl.cs" />
      <Compile Include="Assets\Scripts\PlayerLook.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
-     <Compile Include="Assets\Scripts\ResourceBehavior.cs" />
-     <Compile Include="Assets\Scripts\SimpleSmoothMouseLook.cs" />
+     <Compile Include="Assets\Scripts\Tracking.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
+     <None Include="Assets\Materials\FrontCullingDiffuse.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
