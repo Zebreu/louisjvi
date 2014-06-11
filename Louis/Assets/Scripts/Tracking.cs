@@ -1,20 +1,29 @@
 ﻿/*
 using UnityEngine;
 using System.Collections;
-using Tobii
+using Tobii.EyeTracking.IO;
 
 public class Tracking : MonoBehaviour {
+	private IETracker tracker;
+	private bool tracking;
+	private string ipAddress = "";
 
 	// Use this for initialization
 	void Start () 
 	{
-		Tobii.EyeTracking.Sdk.Library.Init();
-		tracker = Tobii.EyeTracking.Sdk.EyetrackerFactory.CreateEyeTracker();
+		Library.Init();
+		IEyeTrackerFactoryInfo connectionInfo = new CreateFactoryInfoByIpAddress(ipAddress, 4455, 4457);
+		tracker = connectionInfo.CreateEyeTracker;
 		
 		//Todo: Calibration
 		
 		tracker.StartTracking();
-		
+		tracker.GazeDataReceived += tracker_GazeDataReceived;
+		tracking = true;
+	}
+
+	void tracker_GazeDataReceived(object sender, GazeDataEventArgs e)
+	{
 		
 	}
 	
