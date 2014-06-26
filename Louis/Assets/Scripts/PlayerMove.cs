@@ -35,7 +35,7 @@ public class PlayerMove : MonoBehaviour {
 		rigidbody.MovePosition(rigidbody.position+targetVelocity); // Alternative movement 
 		//rigidbody.AddForce (targetVelocity, ForceMode.VelocityChange);
 
-		if (Input.GetButton("Jump") && grounded) // Jumping, the key must be pressed once, won't trigger again until released
+		if (Input.GetButton("Jump") && grounded)
 		{
 			rigidbody.AddForce (new Vector3(0,jumpSpeed,0),ForceMode.VelocityChange);
 		}
