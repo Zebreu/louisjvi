@@ -3,6 +3,21 @@ using UnityEngine;
 using System.Collections;
 using Tobii.EyeTracking.IO;
 
+/*
+//From StackOverflow's AngryAnt:
+Process otherProcess = new Process ();
+otherProcess.StartInfo.FileName = path;
+otherProcess.StartInfo.CreateNoWindow = true;
+otherProcess.StartInfo.UseShellExecute = false;
+otherProcess.StartInfo.RedirectStandardInput = true;
+otherProcess.StartInfo.RedirectStandardOutput = true;
+ 
+// Now communicate via streams
+//     otherProcess.StandardOutput
+// and
+//     otherProcess.StandardInput
+*/
+
 public class EyeTrackingClass : MonoBehaviour {
 
 	private EyeTrackerBrowser browser;
@@ -113,7 +128,7 @@ public class EyeTrackingClass : MonoBehaviour {
 			GUI.DrawTexture(new Rect(calibrators[calibration_index]*Screen.width-20, calibrators[calibration_index+1]*Screen.height-20, circle.width, circle.height), circle);
 		} else // Shows a circle that follow the user's gaze
 		{
-			GUI.DrawTexture(new Rect(xPosition-20, yPosition-20, circle.width, circle.height), circle);
+			GUI.DrawTexture(new Rect(xPosition-18, yPosition-18, circle.width, circle.height), circle);
 		}
 
 
