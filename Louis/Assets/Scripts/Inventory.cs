@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour {
-	//bool toolOpen = false;
+	bool toolOpen = false;
 	public bool inventoryOpen = false;
 	
 	public Texture2D circle;
@@ -10,21 +10,14 @@ public class Inventory : MonoBehaviour {
 	public string seenObject = "";
 	
 	private int inventoryGrid = -1;
+	private int toolGrid = -1;
 	
 	Dictionary<string, int> inventory = new Dictionary<string, int>();
 	
 	void Start () {
 		Screen.lockCursor = true;
 	}
-	
-	void OpenInventory()
-	{
-	}
-	
-	void CloseInventory()
-	{
-	}
-	
+		
 	void InventoryFill(string name)
 	/// <summary>
 	/// Adds the chemical element to the inventory depending on the selected object 
@@ -53,7 +46,7 @@ public class Inventory : MonoBehaviour {
 			inventory.Add (symbol, number);
 		}
 		
-		Debug.Log (symbol +": "+ inventory[symbol]);
+		Debug.Log (inventory[symbol]+" "+symbol);
 	}
 
 	void Selection()
@@ -88,17 +81,64 @@ public class Inventory : MonoBehaviour {
 		{
 			if (!inventoryOpen)
 			{
-				Debug.Log ("opening");
 				inventoryOpen = true;
 				Screen.lockCursor = false;
-				OpenInventory();
+				
 			} else {
 				inventoryOpen = false;
+				toolOpen = false;
 				inventoryGrid = -1;
 				Screen.lockCursor = true;
-				CloseInventory();
 			}	
 		}
+		
+		if (Input.GetButtonDown ("Open Tool"))
+		{
+			if (!toolOpen)
+			{
+				toolOpen = true;
+				inventoryOpen = true;
+				Screen.lockCursor = false;
+			} else {
+				toolOpen = false;
+				inventoryOpen = false;
+				Screen.lockCursor = true;
+				inventoryGrid = -1;
+			}	
+		}
+	}
+	
+	void displayInventory()
+	{
+		string[] inventoryArray = new string[inventory.Keys.Count];
+		string toAdd = "";
+		
+		int index = 0;
+		foreach (KeyValuePair<string,int> item in inventory)
+		{
+			toAdd = item.Value+" "+item.Key;
+			inventoryArray[index] = toAdd;
+			index += 1;
+		}
+		
+		GUILayout.BeginArea (new Rect(0.0f,Screen.height/1.2f,Screen.width,100.0f));
+		GUI.skin.button.stretchWidth = false;
+		GUI.skin.button.fontSize = 30;
+		
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		inventoryGrid = GUILayout.SelectionGrid(inventoryGrid, inventoryArray,inventory.Keys.Count);
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+		GUILayout.EndArea ();
+	}
+	
+	void displayTool()
+	{
+		displayInventory();
+		
+		
+		
 	}
 
 	void OnGUI()
@@ -113,29 +153,14 @@ public class Inventory : MonoBehaviour {
 			GUI.Label (labelSize, seenObject, "box");
 		}
 		
-		if (inventoryOpen)
+		if (toolOpen)
 		{
-			string[] inventoryArray = new string[inventory.Keys.Count];
-			string toAdd = "";
-			
-			int index = 0;
-			foreach (KeyValuePair<string,int> item in inventory)
+			displayTool();
+		} else {
+			if (inventoryOpen)
 			{
-				toAdd = item.Key+": "+item.Value;
-				inventoryArray[index] = toAdd;
-				index += 1;
+				displayInventory();
 			}
-			
-			GUILayout.BeginArea (new Rect(0.0f,Screen.height/1.2f,Screen.width,100.0f));
-			GUI.skin.button.stretchWidth = false;
-			GUI.skin.button.fontSize = 30;
-			
-			GUILayout.BeginHorizontal();
-			GUILayout.FlexibleSpace();
-			inventoryGrid = GUILayout.SelectionGrid(inventoryGrid, inventoryArray,inventory.Keys.Count);
-			GUILayout.FlexibleSpace();
-			GUILayout.EndHorizontal();
-			GUILayout.EndArea ();
 		}
 	}
 }
