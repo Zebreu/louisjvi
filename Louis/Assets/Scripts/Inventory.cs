@@ -9,13 +9,34 @@ public class Inventory : MonoBehaviour {
 	public Camera mainCamera;
 	public string seenObject = "";
 	
-	private int inventoryGrid = -1;
-	private int toolGrid = -1;
+	private bool useBackup = false;
 	
+	private int inventoryGrid = -1;
+	
+	Dictionary<string, int> backupInventory;
 	Dictionary<string, int> inventory = new Dictionary<string, int>();
+	string[] inventoryArray;
+	
+	int toolSizeX = 6;
+	int toolSizeY = 4;
+	
+	private string[,] toolContents;
+	
+	int buttonSize = 80;
+	int spacing = 3;	  
+	int offsetX;
+	int offsetY;
 	
 	void Start () {
 		Screen.lockCursor = true;
+	}
+	
+	void CalculateOffset()
+	{
+		int totalwidth = toolSizeX*(buttonSize+spacing);
+		int totalheight = toolSizeY*(buttonSize+spacing);
+		offsetX = (Screen.width-totalwidth)/2;
+		offsetY = (Screen.height-totalheight)/2;
 	}
 		
 	void InventoryFill(string name)
@@ -40,7 +61,7 @@ public class Inventory : MonoBehaviour {
 		
 		if (inventory.ContainsKey(symbol))
 		{
-			inventory[symbol] = inventory[symbol]+number;
+			inventory[symbol] += number;
 		} else 
 		{
 			inventory.Add (symbol, number);
@@ -89,6 +110,10 @@ public class Inventory : MonoBehaviour {
 				toolOpen = false;
 				inventoryGrid = -1;
 				Screen.lockCursor = true;
+				if (useBackup) 
+				{
+					inventory = new	Dictionary<string, int>(backupInventory);
+				}
 			}	
 		}
 		
@@ -99,18 +124,34 @@ public class Inventory : MonoBehaviour {
 				toolOpen = true;
 				inventoryOpen = true;
 				Screen.lockCursor = false;
+				//Creates an empty tool
+				toolContents = new string[toolSizeX,toolSizeY];
+				for(int i = 0; i < toolSizeX; i++)
+				{
+					for(int j = 0; j< toolSizeY; j++)
+					{ 
+						toolContents[i,j] = "";
+					}
+				}	
+				CalculateOffset();
+				useBackup = true;
+				backupInventory = new Dictionary<string, int>(inventory);
 			} else {
 				toolOpen = false;
 				inventoryOpen = false;
 				Screen.lockCursor = true;
 				inventoryGrid = -1;
+				if (useBackup) 
+				{
+					inventory = new	Dictionary<string, int>(backupInventory);
+				}
 			}	
 		}
 	}
 	
 	void displayInventory()
 	{
-		string[] inventoryArray = new string[inventory.Keys.Count];
+		inventoryArray = new string[inventory.Keys.Count];
 		string toAdd = "";
 		
 		int index = 0;
@@ -137,15 +178,34 @@ public class Inventory : MonoBehaviour {
 	{
 		displayInventory();
 		
-		
+		GUI.skin.box.fontSize = 50;
+		GUI.skin.box.alignment = TextAnchor.MiddleCenter;
+		for(int i = 0; i < toolSizeX; i++)
+		{
+			for(int j = 0; j < toolSizeY; j++)
+			{
+				if( GUI.Button( new Rect(offsetX+i*(buttonSize+spacing), offsetY+j*(buttonSize+spacing), buttonSize, buttonSize), toolContents[i,j],GUI.skin.box))
+				{
+					if (inventoryGrid != -1)
+					{
+						string[] items = inventoryArray[inventoryGrid].Split ();
+						string symbol = items[items.Length-1];
+						if (inventory[symbol] > 0)
+						{
+							toolContents[i,j] = symbol;
+							inventory[symbol] += -1;
+						}
+					}
+				}
+			}
+		}
 		
 	}
+	
+	//
 
 	void OnGUI()
-	{
-		GUI.DrawTexture(new Rect((Screen.width) / 2 - 18, (Screen.height) /2 - 18, circle.width, circle.height),circle);
-		// Value of 18 seems best to center the crosshair, larger than Unity's calculated width (16*2) and smaller than the real texture's width (20*2)
-		
+	{		
 		if (seenObject != "") 
 		{
 			Rect labelSize = GUILayoutUtility.GetRect (new GUIContent (seenObject), "box");
@@ -160,6 +220,9 @@ public class Inventory : MonoBehaviour {
 			if (inventoryOpen)
 			{
 				displayInventory();
+			} else {
+				GUI.DrawTexture(new Rect((Screen.width) / 2 - 18, (Screen.height) /2 - 18, circle.width, circle.height),circle);
+				// Value of 18 seems best to center the crosshair, larger than Unity's calculated width (16*2) and smaller than the real texture's width (20*2)
 			}
 		}
 	}
