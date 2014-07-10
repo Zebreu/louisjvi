@@ -12,6 +12,7 @@ public class PlayerLook : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		inventory = inventoryObject.GetComponent<Inventory>();
+		headlight.SetActive (false);
 	}
 	
 	// Update is called once per frame

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour {
+	TaskManagement taskManagement;
 	bool toolOpen = false;
 	public bool inventoryOpen = false;
 	
@@ -29,6 +30,8 @@ public class Inventory : MonoBehaviour {
 	
 	void Start () {
 		Screen.lockCursor = true;
+		GameObject tasks = GameObject.Find ("Tasks");
+		taskManagement = tasks.GetComponent<TaskManagement>();
 	}
 	
 	void CalculateOffset()
@@ -47,13 +50,13 @@ public class Inventory : MonoBehaviour {
 		string symbol = "";
 		int number = 0;
 		
-		if (name.CompareTo("OxygenTank") == 0)
+		if (name.CompareTo("Oxygen tank") == 0)
 		{
 			symbol = "O";
 			number = 2;
 		}
 		
-		if (name.CompareTo("HydrogenTank") == 0)
+		if (name.CompareTo("Hydrogen tank") == 0)
 		{
 			symbol = "H";
 			number = 2;
@@ -146,6 +149,16 @@ public class Inventory : MonoBehaviour {
 					inventory = new	Dictionary<string, int>(backupInventory);
 				}
 			}	
+		}
+		if (Input.GetButtonDown ("Combine") && toolOpen)
+		{
+			string compound = taskManagement.Combine (toolContents);
+			if (compound == "None")
+			{
+				Debug.Log("Not available");
+			} else {
+				Debug.Log (compound);	
+			}
 		}
 	}
 	
