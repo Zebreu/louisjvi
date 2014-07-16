@@ -69,7 +69,7 @@ public class Inventory : MonoBehaviour {
 			number = 4;
 		}
 		
-		if (name.Equals ("Coal"))
+		if (name.Equals ("Carbon"))
 		{
 			symbol = "C";
 			number = 2;
