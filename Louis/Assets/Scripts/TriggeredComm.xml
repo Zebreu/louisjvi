@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<triggeredcommunication>
+	<communication id="">Tu sembles être tombé dans un système de cavernes, est-ce que ça va bien? Ta combinaison semble être en bon état, d'après les signaux que je reçois. Vérifie si ta lampe frontale fonctionne encore</communication>
+	<communication id="">Oh non, je détecte qu'il y a eu une fuite dans ton système de régulation de température. La combinaison se répare d'elle-même, mais tu dois trouver de l'eau afin d'alimenter à nouveau le système. Si tu n'en trouves pas, tu vas rapidement atteindre une température dangereuse!</communication>
+</triggeredcommunication>

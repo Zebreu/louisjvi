@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<triggeredinfo>
+	<gameinfo id="">Appuie sur W,A,S,D pour te déplacer, et Espace pour sauter</gameinfo>
+	<gameinfo id="">Appuie sur L pour allumer et éteindre ta lampe</gameinfo>
+	<gameinfo id="">Appuie sur I pour ouvrir ton inventaire</gameinfo>
+	<gameinfo id="">Appuie sur O pour ouvrir l'interface de ton outil qui te permet de produire des composés chimiques</gameinfo>
+	<gameinfo id="">En cliquant d'abord sur un élément dans ton inventaire puis dans une case de l'interface, tu peux placer les éléments de sorte à reproduire la structure de Lewis du composé désiré</gameinfo>
+	<gameinfo id="">Lorsque tu es prêt à produire le composé, appuie sur P et le composé, si correctement reproduit, sera ajouté à ton inventaire</gameinfo>
+</triggeredinfo>
