@@ -268,6 +268,7 @@ public class Inventory : MonoBehaviour {
 	
 		GUI.skin.box.fontSize = 50;
 		GUI.skin.box.alignment = TextAnchor.MiddleCenter;
+		GUI.skin.box.wordWrap = false;
 		
 		GUI.skin.button.stretchWidth = false;
 		GUI.skin.button.fontSize = 50;

@@ -16,6 +16,7 @@ public class BoxTextTrigger : MonoBehaviour {
 		if (other.name.Equals("Player"))
 		{
 			receiver.GetTrigger(name);
+			Destroy (gameObject);
 		}
 	}
 }
