@@ -8,6 +8,12 @@ public class Inventory : MonoBehaviour {
 	public bool inventoryOpen = false;
 	
 	public Texture2D circle;
+	public Texture2D bond1;
+	public Texture2D bond1horizontal;
+	public Texture2D bond2;
+	public Texture2D bond2horizontal;
+	public Texture2D bond3;
+	public Texture2D bond3horizontal;
 	public Camera mainCamera;
 	public string seenObject = "";
 	
@@ -18,6 +24,11 @@ public class Inventory : MonoBehaviour {
 	Dictionary<string, int> backupInventory;
 	Dictionary<string, int> inventory = new Dictionary<string, int>();
 	string[] inventoryArray;
+	
+	int[] bondPair = new int[4];
+	bool newBond;
+	Dictionary<string, List<int[]>> bondsLogic;
+	Dictionary<Rect, Texture2D> bonds;
 	
 	int toolSizeX = 6;
 	int toolSizeY = 4;
@@ -38,7 +49,13 @@ public class Inventory : MonoBehaviour {
 		Screen.lockCursor = true;
 		GameObject tasks = GameObject.Find ("Tasks");
 		taskManagement = tasks.GetComponent<TaskManagement>();
-
+		inventory.Add("I",1);
+		inventory.Add("II",1);
+		
+		bonds = new Dictionary<Rect, Texture2D>();
+		bondsLogic = new Dictionary<string, List<int[]>>();
+		bondsLogic.Add ("I",new List<int[]>());
+		bondsLogic.Add ("II",new List<int[]>());		
 	}
 	
 	void CalculateOffset()
@@ -155,6 +172,12 @@ public class Inventory : MonoBehaviour {
 			Screen.lockCursor = false;
 			
 			//Creates an empty tool
+			bonds = new Dictionary<Rect, Texture2D>();
+			bondsLogic = new Dictionary<string, List<int[]>>();
+			bondsLogic.Add ("I",new List<int[]>());
+			bondsLogic.Add ("II",new List<int[]>());
+			newBond = true;
+			
 			toolContents = new string[toolSizeX,toolSizeY];
 			for(int i = 0; i < toolSizeX; i++)
 			{
@@ -229,6 +252,70 @@ public class Inventory : MonoBehaviour {
 		GUILayout.EndArea ();
 	}
 	
+	void addBond(Rect bondPosition, string direction, string symbol)
+	{
+		foreach (KeyValuePair<Rect,Texture2D> bond in bonds)
+		{
+			if (bond.Key.Overlaps(bondPosition))
+			{
+				bonds.Remove(bond.Key);
+				break;
+			}
+		}
+		
+		if (direction.Equals("vertical"))
+		{
+			if (symbol.Equals("II"))
+			{
+				bonds.Add (bondPosition, bond2);
+			} else {
+				bonds.Add (bondPosition, bond1);
+			}
+		} else if (symbol.Equals("II"))
+		{
+			bonds.Add (bondPosition, bond2horizontal);
+		} else {
+			bonds.Add (bondPosition, bond1horizontal);
+		}
+	}
+	
+	void checkBond(Rect position, int[] bondPair, string symbol)
+	{		
+		if (bondPair[0] < bondPair[2]) // Left 
+		{
+			addBond(new Rect(position.x - buttonSize*0.21f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height) ,"horizontal", symbol);	
+		}
+		else if (bondPair[1] < bondPair[3]) // Upper
+		{
+			addBond (new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y - buttonSize*0.21f, bond1.width, bond1.height) ,"vertical", symbol);
+		}
+		else if (bondPair[0] != bondPair[2]) // Right
+		{
+			addBond (new Rect(position.x + buttonSize*0.81f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height) ,"horizontal", symbol);
+		} else { // Lower
+			addBond(new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y + buttonSize*0.81f, bond1.width, bond1.height), "vertical", symbol);
+		}
+		
+		/*
+		Rect bondPosition = new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y + buttonSize*0.81f, bond1.width, bond1.height);
+		bonds.Add(bondPosition,bond1);
+		bondPosition = new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y - buttonSize*0.21f, bond1.width, bond1.height);
+		bonds.Add(bondPosition,bond1);
+		bondPosition = new Rect(position.x + buttonSize*0.81f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height);
+		bonds.Add(bondPosition,bond1horizontal);
+		bondPosition = new Rect(position.x - buttonSize*0.21f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height);
+		bonds.Add(bondPosition,bond1horizontal);
+		*/
+	}
+	
+	void displayBonds()
+	{
+		foreach (KeyValuePair<Rect,Texture2D> bond in bonds)
+		{
+			GUI.DrawTexture(bond.Key, bond.Value);
+		}
+	}
+	
 	void displayTool()
 	{
 		displayInventory();
@@ -239,7 +326,8 @@ public class Inventory : MonoBehaviour {
 		{
 			for(int j = 0; j < toolSizeY; j++)
 			{
-				if( GUI.Button( new Rect(offsetX+i*(buttonSize+spacing), offsetY+j*(buttonSize+spacing), buttonSize, buttonSize), toolContents[i,j],GUI.skin.box))
+				Rect position = new Rect(offsetX+i*(buttonSize+spacing), offsetY+j*(buttonSize+spacing), buttonSize, buttonSize);
+				if( GUI.Button( position, toolContents[i,j],GUI.skin.box))
 				{
 					if (inventoryGrid != -1)
 					{
@@ -251,13 +339,31 @@ public class Inventory : MonoBehaviour {
 						}
 						else if (inventory[symbol] > 0)
 						{
-							toolContents[i,j] = symbol;
-							inventory[symbol] += -1;
+							if (symbol.Equals("I") || symbol.Equals("II")) // Adds covalent bonds between atoms
+							{
+								if (!newBond)
+								{
+									bondPair[2] = i;
+									bondPair[3] = j;
+									bondsLogic[symbol].Add (bondPair);
+									checkBond (position,bondPair,symbol);
+									bondPair = new int[4];
+									newBond = true;
+								} else {
+									bondPair[0] = i;
+									bondPair[1] = j;
+									newBond = false;
+								}
+							} else {
+								toolContents[i,j] = symbol;
+								inventory[symbol] += -1;
+							}
 						}
 					}
 				}
 			}
 		}
+		displayBonds ();
 		
 	}
 	
