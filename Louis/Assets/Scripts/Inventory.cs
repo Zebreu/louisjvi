@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class Inventory : MonoBehaviour {
 	TaskManagement taskManagement;
@@ -83,7 +84,7 @@ public class Inventory : MonoBehaviour {
 		if (name.Equals("Hydrogen tank"))
 		{
 			symbol = "H";
-			number = 4;
+			number = 12;
 		}
 		
 		if (name.Equals ("Carbon"))
@@ -215,7 +216,7 @@ public class Inventory : MonoBehaviour {
 		}
 		if (Input.GetButtonDown ("Combine") && toolOpen)
 		{
-			string compound = taskManagement.Combine (toolContents);
+			string compound = taskManagement.Combine (toolContents, bondsLogic);
 			if (compound == "None")
 			{
 				Debug.Log("Not available");
@@ -250,15 +251,56 @@ public class Inventory : MonoBehaviour {
 		GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea ();
+		
+		if (inventoryGrid > -1) 
+		{
+			string[] items = inventoryArray[inventoryGrid].Split ();
+			string symbol = items[items.Length-1];
+			
+			if (symbol.Length > 2 && taskManagement.progressionIndex < taskManagement.progression.Length)
+			{
+				if (symbol.Equals(taskManagement.progression[taskManagement.progressionIndex]))
+				{
+					// Success - do something about it
+					Debug.Log ("Success");
+					taskManagement.progressionIndex += 1;
+				}
+			}
+		}
 	}
 	
-	void addBond(Rect bondPosition, string direction, string symbol)
+	void addBond(Rect bondPosition, string direction, string symbol, int[] bondPair)
+	// Creates a bond both for display and logic purposes
 	{
+		int[] bondPairOpposite = new int[4];
+		bondPairOpposite[0] = bondPair[2];
+		bondPairOpposite[1] = bondPair[3];
+		bondPairOpposite[2] = bondPair[0];
+		bondPairOpposite[3] = bondPair[1];
+		
 		foreach (KeyValuePair<Rect,Texture2D> bond in bonds)
 		{
 			if (bond.Key.Overlaps(bondPosition))
 			{
 				bonds.Remove(bond.Key);
+				bool replaced = false;
+				foreach(KeyValuePair<string,List<int[]>> logicbond in bondsLogic)
+				{
+					foreach(int[] logicbondposition in logicbond.Value)
+					{
+						if (bondPair.SequenceEqual(logicbondposition) || bondPairOpposite.SequenceEqual(logicbondposition))
+						{
+							replaced = true;
+							logicbond.Value.Remove (logicbondposition);
+							Debug.Log ("replacing!");
+							break;
+						} 
+					}
+					if (replaced)
+					{
+						break;
+					}
+				}
 				break;
 			}
 		}
@@ -280,20 +322,21 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void checkBond(Rect position, int[] bondPair, string symbol)
+	// Checks the direction in which the bond is created and its position
 	{		
 		if (bondPair[0] < bondPair[2]) // Left 
 		{
-			addBond(new Rect(position.x - buttonSize*0.21f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height) ,"horizontal", symbol);	
+			addBond(new Rect(position.x - buttonSize*0.21f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height) ,"horizontal", symbol, bondPair);	
 		}
 		else if (bondPair[1] < bondPair[3]) // Upper
 		{
-			addBond (new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y - buttonSize*0.21f, bond1.width, bond1.height) ,"vertical", symbol);
+			addBond (new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y - buttonSize*0.21f, bond1.width, bond1.height) ,"vertical", symbol, bondPair);
 		}
 		else if (bondPair[0] != bondPair[2]) // Right
 		{
-			addBond (new Rect(position.x + buttonSize*0.81f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height) ,"horizontal", symbol);
+			addBond (new Rect(position.x + buttonSize*0.81f, position.y + buttonSize/2f - bond1.width/2f-1, bond1.width, bond1.height) ,"horizontal", symbol, bondPair);
 		} else { // Lower
-			addBond(new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y + buttonSize*0.81f, bond1.width, bond1.height), "vertical", symbol);
+			addBond(new Rect(position.x + buttonSize/2f - bond1.width/2f+1, position.y + buttonSize*0.81f, bond1.width, bond1.height), "vertical", symbol, bondPair);
 		}
 		
 		/*
@@ -345,8 +388,19 @@ public class Inventory : MonoBehaviour {
 								{
 									bondPair[2] = i;
 									bondPair[3] = j;
-									bondsLogic[symbol].Add (bondPair);
 									checkBond (position,bondPair,symbol);
+									
+									bondsLogic[symbol].Add (bondPair);
+									
+									foreach(KeyValuePair<string, List<int[]>> item in bondsLogic)
+									{
+										Debug.Log (item.Key);
+										foreach(int[] listitem in item.Value)
+										{
+											Debug.Log (listitem[0]+","+listitem[1]+","+listitem[2]+","+listitem[3]);
+										}
+									}
+									
 									bondPair = new int[4];
 									newBond = true;
 								} else {
