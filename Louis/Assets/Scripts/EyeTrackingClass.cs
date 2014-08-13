@@ -31,6 +31,9 @@ public class EyeTrackingClass : MonoBehaviour {
 	private double rightGaze_Y= 0.0;
 	//private double rightGaze_Z= 0.0;
 
+	private float left_pupil_diameter = 0.0f;
+	private float right_pupil_diameter = 0.0f;
+
 	private bool calibrating = false;
 	private float[] calibrators = new float[10] {0.2f,0.2f,0.2f,0.8f,0.8f,0.8f,0.8f,0.2f,0.5f,0.4f};
 	private int calibration_index = 0;
@@ -83,11 +86,15 @@ public class EyeTrackingClass : MonoBehaviour {
 		rightGaze_X = e.GazeDataItem.RightGazePoint2D.X;
 		rightGaze_Y = e.GazeDataItem.RightGazePoint2D.Y;
 		//rightGaze_Z = e.GazeDataItem.RightGazePoint3D.Z;
+		
+		left_pupil_diameter = e.GazeDataItem.LeftPupilDiameter;
+		right_pupil_diameter = e.GazeDataItem.RightPupilDiameter;
 
 	}
 
 	void Update () 
 	{
+		//Debug.Log (left_pupil_diameter+" "+right_pupil_diameter);
 		
 		/*
 			if (Mathf.Ceil(Time.time) != time_elapsed) 
