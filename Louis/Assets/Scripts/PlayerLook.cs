@@ -4,14 +4,17 @@ using System.Collections;
 public class PlayerLook : MonoBehaviour {
 
 	public float sensibility = 2.5f;
-	public GameObject body;
-	public GameObject inventoryObject;
-	public GameObject headlight;
+	GameObject body;
+	GameObject headlight;
 	Inventory inventory; 
 	
 	// Use this for initialization
 	void Start () {
-		inventory = inventoryObject.GetComponent<Inventory>();
+		body = GameObject.Find("Player");
+		GameObject inventoryObject = GameObject.Find("Inventory");
+		headlight = GameObject.Find ("Headlight"); 
+		inventory = inventoryObject.GetComponent<Inventory>();		
+		
 		headlight.SetActive (false);
 	}
 	

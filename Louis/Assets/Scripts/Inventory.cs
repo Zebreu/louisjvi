@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour {
 	public Texture2D bond2horizontal;
 	public Texture2D bond3;
 	public Texture2D bond3horizontal;
-	public Camera mainCamera;
+	Camera mainCamera;
 	public string seenObject = "";
 	
 	private bool useBackup = false;
@@ -47,6 +47,8 @@ public class Inventory : MonoBehaviour {
 	char c4 = '\u2084';
 	
 	void Start () {
+		mainCamera = Camera.main;
+	
 		Screen.lockCursor = true;
 		GameObject tasks = GameObject.Find ("Tasks");
 		taskManagement = tasks.GetComponent<TaskManagement>();
@@ -57,6 +59,13 @@ public class Inventory : MonoBehaviour {
 		bondsLogic = new Dictionary<string, List<int[]>>();
 		bondsLogic.Add ("I",new List<int[]>());
 		bondsLogic.Add ("II",new List<int[]>());		
+	
+		DontDestroyOnLoad(transform.gameObject);
+	}
+	
+	void OnLevelWasLoaded()
+	{
+		mainCamera = Camera.main;
 	}
 	
 	void CalculateOffset()

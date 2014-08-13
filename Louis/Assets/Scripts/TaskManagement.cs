@@ -39,6 +39,8 @@ public class TaskManagement : MonoBehaviour {
 		
 		progressionIndex = 0;
 		progression = new string[2]{"H"+c2+"O","CH"+c4};
+	
+		DontDestroyOnLoad(transform.gameObject);
 	}
 	
 	public string Combine(string[,] tool, Dictionary<string,List<int[]>> bondsLogic)
