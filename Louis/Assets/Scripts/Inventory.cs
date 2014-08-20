@@ -41,6 +41,8 @@ public class Inventory : MonoBehaviour {
 	int offsetX;
 	int offsetY;
 	
+	string usedCompound;
+	
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
 	//char c3 = '\u2083';
@@ -61,6 +63,8 @@ public class Inventory : MonoBehaviour {
 		bondsLogic.Add ("II",new List<int[]>());		
 	
 		DontDestroyOnLoad(transform.gameObject);
+		
+		usedCompound = "";
 	}
 	
 	void OnLevelWasLoaded()
@@ -102,6 +106,24 @@ public class Inventory : MonoBehaviour {
 			number = 2;
 		}
 		
+		if (name.Equals ("Fluorine"))
+		{
+			symbol = "F";
+			number = 2;
+		}
+		
+		if (name.Equals ("Chlorine"))
+		{
+			symbol = "C";
+			number= 2;
+		}
+		
+		if (name.Equals ("Sulfur"))
+		{
+			symbol = "S";
+			number = 2;
+		}
+		
 		if (name.Equals ("h2o"))
 		{
 			symbol = "H"+c2+"O";
@@ -111,6 +133,12 @@ public class Inventory : MonoBehaviour {
 		if (name.Equals ("ch4"))
 		{
 			symbol = "C"+"H"+c4;
+			number = 1;
+		}
+		
+		if (name.Equals("h2so4"))
+		{
+			symbol = "H"+c2+"SO"+c4;
 			number = 1;
 		}
 		
@@ -208,6 +236,11 @@ public class Inventory : MonoBehaviour {
 			{
 				inventory = new	Dictionary<string, int>(backupInventory);
 			}
+			if (usedCompound != "")
+			{
+				inventory[usedCompound] += -1;
+				usedCompound = "";
+			}
 		}	
 	}
 	
@@ -271,6 +304,10 @@ public class Inventory : MonoBehaviour {
 				if (symbol.Equals(taskManagement.progression[taskManagement.progressionIndex]))
 				{
 					// Success - do something about it
+					usedCompound = symbol;
+					inventory[symbol] += -1;
+					taskManagement.dissolveClass.dissolve = true; // Test - to remove later
+					taskManagement.meltClass.melted1 = true;
 					Debug.Log ("Success");
 					taskManagement.progressionIndex += 1;
 				}

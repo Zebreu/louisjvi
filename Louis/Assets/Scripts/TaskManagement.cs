@@ -19,6 +19,11 @@ public class TaskManagement : MonoBehaviour {
 	public int progressionIndex;
 	public string[] progression;
 	
+	// Classes used to progress in the game
+	
+	public Dissolving dissolveClass;
+	public MeltWall meltClass;
+	
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
 	//char c3 = '\u2083';
@@ -41,6 +46,9 @@ public class TaskManagement : MonoBehaviour {
 		progression = new string[2]{"H"+c2+"O","CH"+c4};
 	
 		DontDestroyOnLoad(transform.gameObject);
+		
+		dissolveClass = GameObject.Find("debris").GetComponent<Dissolving>();
+		meltClass = GameObject.Find("Task2-Melt").GetComponent<MeltWall>();
 	}
 	
 	public string Combine(string[,] tool, Dictionary<string,List<int[]>> bondsLogic)

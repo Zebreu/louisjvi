@@ -47,11 +47,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BoxTextTrigger.cs" />
+     <Compile Include="Assets\Scripts\Dissolving.cs" />
      <Compile Include="Assets\Scripts\EquationBalance.cs" />
      <Compile Include="Assets\Scripts\EvaluationTextfield.cs" />
      <Compile Include="Assets\Scripts\EyeTrackingClass.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\LevelLoading.cs" />
+     <Compile Include="Assets\Scripts\MeltWall.cs" />
      <Compile Include="Assets\Scripts\PlayerLook.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
      <Compile Include="Assets\Scripts\RecordingData.cs" />
