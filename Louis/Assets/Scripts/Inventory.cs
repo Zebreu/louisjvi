@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour {
 		
 		if (name.Equals ("Chlorine"))
 		{
-			symbol = "C";
+			symbol = "Cl";
 			number= 2;
 		}
 		
@@ -306,8 +306,14 @@ public class Inventory : MonoBehaviour {
 					// Success - do something about it
 					usedCompound = symbol;
 					inventory[symbol] += -1;
+					
 					taskManagement.dissolveClass.dissolve = true; // Test - to remove later
 					taskManagement.meltClass.melted1 = true;
+					if (taskManagement.progressionIndex == 1)
+					{
+						taskManagement.meltClass.melted2 = true;
+					}
+					
 					Debug.Log ("Success");
 					taskManagement.progressionIndex += 1;
 				}

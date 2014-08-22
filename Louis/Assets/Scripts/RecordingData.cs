@@ -19,6 +19,8 @@ public class RecordingData : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		double[] gazeData = eyeTrackingData.getGazeData();
-		System.IO.File.AppendAllText(eyetracking_log, System.String.Format("{0} {1} {2} {3}", Time.time, gazeData[0], gazeData[1], System.Environment.NewLine));
+		// Logs left gaze position and left and right pupil diameters
+		System.IO.File.AppendAllText(eyetracking_log, System.String.Format("{0} {1} {2} {3} {4} {5}", Time.time, gazeData[0], gazeData[1], gazeData[4], gazeData[5], System.Environment.NewLine));
+		//System.IO.File.AppendAllText(eyetracking_log, System.String.Format("{0} {1} {2} {3}", Time.time, gazeData[0], gazeData[1], System.Environment.NewLine));
 	}
 }

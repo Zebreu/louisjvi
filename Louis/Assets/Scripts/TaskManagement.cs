@@ -47,7 +47,7 @@ public class TaskManagement : MonoBehaviour {
 	
 		DontDestroyOnLoad(transform.gameObject);
 		
-		dissolveClass = GameObject.Find("debris").GetComponent<Dissolving>();
+		dissolveClass = GameObject.Find("debris1").GetComponent<Dissolving>();
 		meltClass = GameObject.Find("Task2-Melt").GetComponent<MeltWall>();
 	}
 	

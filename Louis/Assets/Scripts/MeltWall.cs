@@ -3,19 +3,25 @@ using System.Collections;
 
 public class MeltWall : MonoBehaviour {
 	GameObject[] toMelt;
+	GameObject[] toMelt2;
 	public bool melted1;
+	public bool melted2;
+	int stopped;
+	int stopped2;
 	
 	// Use this for initialization
 	void Start () 
 	{
 		toMelt = GameObject.FindGameObjectsWithTag("Melt1");
+		toMelt2 = GameObject.FindGameObjectsWithTag("Melt2");
 		melted1 = false;
+		melted2 = false;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		int stopped = 0;
+		stopped = 0;
 		if (melted1)
 		{
 			foreach(GameObject wallElement in toMelt)
@@ -31,6 +37,25 @@ public class MeltWall : MonoBehaviour {
 			if (stopped == toMelt.Length)
 			{
 				melted1 = false;
+			}
+		}
+		
+		stopped2 = 0;
+		if (melted2)
+		{
+			foreach(GameObject wallElement in toMelt2)
+			{
+				if (wallElement.transform.position.y > 32.3f)
+				{
+					wallElement.transform.Translate(new Vector3(0.0f,-0.3f,0.0f)*Time.deltaTime,Space.World);
+				} else 
+				{	
+					stopped2 += 1;
+				}
+			}
+			if (stopped2 == toMelt2.Length)
+			{
+				melted2 = false;
 			}
 		}
 	}

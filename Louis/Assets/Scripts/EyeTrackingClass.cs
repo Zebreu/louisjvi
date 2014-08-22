@@ -150,6 +150,7 @@ public class EyeTrackingClass : MonoBehaviour {
 
 	public double[] getGazeData()
 	{
-		return new double[] {leftGaze_X, leftGaze_Y, rightGaze_X, rightGaze_Y};
+		return new double[] {leftGaze_X, leftGaze_Y, rightGaze_X, rightGaze_Y, (double)left_pupil_diameter, (double)right_pupil_diameter};
+		//return new double[] {leftGaze_X, leftGaze_Y, rightGaze_X, rightGaze_Y};
 	}
 }
