@@ -16,6 +16,10 @@ public class PlayerLook : MonoBehaviour {
 		inventory = inventoryObject.GetComponent<Inventory>();		
 		
 		headlight.SetActive (false);
+		if (transform.position.x > 250.0f)
+		{
+			headlight.SetActive(true);
+		}
 	}
 	
 	// Update is called once per frame
