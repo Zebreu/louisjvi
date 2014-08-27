@@ -10,7 +10,7 @@ public class TextTriggering : MonoBehaviour {
 	string textType = "";
 	string textID = "";
 	string text = "";
-	string gameinfo_filename = @"Assets/Scripts/TriggeredInfo.xml";
+	string gameinfo_filename = @"Assets/Scripts/TriggeredGameInfo.xml";
 	string comm_filename = @"Assets/Scripts/TriggeredComm.xml";
 	string[] gameinfos;
 	string[] comms;
@@ -20,7 +20,7 @@ public class TextTriggering : MonoBehaviour {
 	void Start()
 	// Reads in the files storing the text for the game hints and character communications
 	{
-		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\r\n"}, System.StringSplitOptions.None);
+		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\n"}, System.StringSplitOptions.None);
 		comms = File.ReadAllText (comm_filename).Split (new string[] {"</communic>\r\n"}, System.StringSplitOptions.None);
 	}
 	

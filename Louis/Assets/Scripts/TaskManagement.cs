@@ -12,6 +12,21 @@ public class TaskManagement : MonoBehaviour {
 	List<int[]> ch4bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,2,1}, new int[4]{1,1,1,2}, new int[4]{1,1,0,1}};
 	Dictionary<string,List<int[]>> ch4bonds = new Dictionary<string, List<int[]>>();
 	
+	string[,] h2so4 = new string[,] {{"","H",""},{"","O",""}, {"O","S","O"},{"","O",""},{"","H",""}};
+	List<int[]> h2so4bonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{2,1,3,1}, new int[4]{3,1,4,1}};
+	List<int[]> h2so4bonds2 = new List<int[]>{new int[4]{2,1,2,0}, new int[4]{2,1,2,2}};
+	Dictionary<string,List<int[]>> h2so4bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] ccl2f2v1 = new string[,] {{"","F",""}, {"Cl","C","Cl"},{"","F",""}};
+	string[,] ccl2f2v2 = new string[,] {{"","Cl",""}, {"F","C","F"},{"","Cl",""}};
+	List<int[]> ccl2f2bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,2,1}, new int[4]{1,1,1,2}, new int[4]{1,1,0,1}};
+	Dictionary<string,List<int[]>> ccl2f2v1bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> ccl2f2v2bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] ethanol = new string[,] {{"","H",""}, {"H","C","H"}, {"H","C","H"}, {"","O",""}, {"","H",""}};
+	List<int[]> ethanolbonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{2,1,3,1}, new int[4]{3,1,4,1}, new int[4]{1,1,1,0}, new int[4]{1,1,2,1}, new int[4]{2,1,2,0}, new int[4]{2,1,2,2}};
+	Dictionary<string,List<int[]>> ethanolbonds = new Dictionary<string, List<int[]>>();
+	
 	Dictionary<string,List<int[]>>[] allbonds;
 	string[] names;
 	List<string[,]> molecules = new List<string[,]>();
@@ -26,24 +41,36 @@ public class TaskManagement : MonoBehaviour {
 	
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
-	//char c3 = '\u2083';
+	char c3 = '\u2083';
 	char c4 = '\u2084';
 	
 	// Use this for initialization
 	void Start () {
 		molecules.Add(h2o);
 		molecules.Add(ch4);
-		names = new string[]{"h2o","ch4"};
+		molecules.Add (h2so4);
+		molecules.Add (ccl2f2v1);
+		molecules.Add (ccl2f2v2);
+		molecules.Add (ethanol);
+		names = new string[]{"h2o","ch4","h2so4","ccl2f2","ccl2f2","ethanol"};
 		
 		h2obonds.Add ("I",h2obonds1);
 		h2obonds.Add ("II", new List<int[]>());
 		ch4bonds.Add ("I",ch4bonds1);
 		ch4bonds.Add ("II", new List<int[]>());
-				
-		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds};
+		h2so4bonds.Add ("I", h2so4bonds1);
+		h2so4bonds.Add ("II", h2so4bonds2);
+		ccl2f2v1bonds.Add ("I",ccl2f2bonds1);
+		ccl2f2v1bonds.Add ("II", new List<int[]>());
+		ccl2f2v2bonds.Add ("I",ccl2f2bonds1);
+		ccl2f2v2bonds.Add ("II", new List<int[]>());
+		ethanolbonds.Add ("I",ethanolbonds1);
+		ethanolbonds.Add ("II", new List<int[]>());
+																						
+		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,ccl2f2v1bonds,ccl2f2v2bonds,ethanolbonds};
 		
 		progressionIndex = 0;
-		progression = new string[2]{"H"+c2+"O","CH"+c4};
+		progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};
 	
 		DontDestroyOnLoad(transform.gameObject);
 		

@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour {
 	
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
-	//char c3 = '\u2083';
+	char c3 = '\u2083';
 	char c4 = '\u2084';
 	
 	void Start () {
@@ -97,7 +97,7 @@ public class Inventory : MonoBehaviour {
 		if (name.Equals("Hydrogen tank"))
 		{
 			symbol = "H";
-			number = 12;
+			number = 16;
 		}
 		
 		if (name.Equals ("Carbon"))
@@ -139,6 +139,18 @@ public class Inventory : MonoBehaviour {
 		if (name.Equals("h2so4"))
 		{
 			symbol = "H"+c2+"SO"+c4;
+			number = 1;
+		}
+		
+		if (name.Equals("ccl2f2"))
+		{
+			symbol = "CCl"+c2+"F"+c2;
+			number = 1;
+		}
+		
+		if (name.Equals("ethanol"))
+		{
+			symbol = "CH"+c3+"CH"+c2+"OH";
 			number = 1;
 		}
 		
@@ -285,11 +297,11 @@ public class Inventory : MonoBehaviour {
 			index += 1;
 		}
 		
-		GUILayout.BeginArea (new Rect(0.0f,Screen.height/1.2f,Screen.width,100.0f));
+		GUILayout.BeginArea (new Rect(0.0f,Screen.height/1.4f,Screen.width,250.0f));
 				
 		GUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
-		inventoryGrid = GUILayout.SelectionGrid(inventoryGrid, inventoryArray,inventory.Keys.Count);
+		inventoryGrid = GUILayout.SelectionGrid(inventoryGrid, inventoryArray, 5);//inventory.Keys.Count);
 		GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea ();
@@ -307,11 +319,29 @@ public class Inventory : MonoBehaviour {
 					usedCompound = symbol;
 					inventory[symbol] += -1;
 					
-					taskManagement.dissolveClass.dissolve = true; // Test - to remove later
-					taskManagement.meltClass.melted1 = true;
+					if (taskManagement.progressionIndex == 0)
+					{
+						
+					}
 					if (taskManagement.progressionIndex == 1)
 					{
+						taskManagement.meltClass.melted1 = true;
+					}
+					if (taskManagement.progressionIndex == 2)
+					{
+						taskManagement.dissolveClass.dissolve = true;
+					}
+					if (taskManagement.progressionIndex == 3)
+					{
 						taskManagement.meltClass.melted2 = true;
+					}
+					if (taskManagement.progressionIndex == 4)
+					{
+						
+					}
+					if (taskManagement.progressionIndex == 5)
+					{
+						
 					}
 					
 					Debug.Log ("Success");
