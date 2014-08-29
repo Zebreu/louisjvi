@@ -7,6 +7,7 @@ public class Inventory : MonoBehaviour {
 	TaskManagement taskManagement;
 	bool toolOpen = false;
 	public bool inventoryOpen = false;
+	bool tableOpen = false;
 	
 	public Texture2D circle;
 	public Texture2D bond1;
@@ -17,6 +18,8 @@ public class Inventory : MonoBehaviour {
 	public Texture2D bond3horizontal;
 	Camera mainCamera;
 	public string seenObject = "";
+	
+	public Texture2D periodicTable;
 	
 	private bool useBackup = false;
 	
@@ -88,37 +91,37 @@ public class Inventory : MonoBehaviour {
 		string symbol = "";
 		int number = 0;
 		
-		if (name.Equals("Oxygen tank"))
+		if (name.Substring(0,2).Equals("Ox"))
 		{
 			symbol = "O";
 			number = 4;
 		}
 		
-		if (name.Equals("Hydrogen tank"))
+		if (name.Substring(0,2).Equals("Hy"))
 		{
 			symbol = "H";
 			number = 16;
 		}
 		
-		if (name.Equals ("Carbon"))
+		if (name.Equals ("Carbone"))
 		{
 			symbol = "C";
 			number = 2;
 		}
 		
-		if (name.Equals ("Fluorine"))
+		if (name.Equals ("Fluor"))
 		{
 			symbol = "F";
 			number = 2;
 		}
 		
-		if (name.Equals ("Chlorine"))
+		if (name.Equals ("Chlore"))
 		{
 			symbol = "Cl";
 			number= 2;
 		}
 		
-		if (name.Equals ("Sulfur"))
+		if (name.Equals ("Soufre"))
 		{
 			symbol = "S";
 			number = 2;
@@ -194,6 +197,17 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
+	void TableToggle()
+	{
+		if (!tableOpen)
+		{
+			tableOpen = true;
+		}
+		else {
+			tableOpen = false;
+		}
+	}
+
 	void InventoryToggle()
 	{
 		if (!inventoryOpen)
@@ -261,7 +275,7 @@ public class Inventory : MonoBehaviour {
 		
 		if (Input.GetButtonDown("Open Inventory"))
 		{
-			InventoryToggle();
+			TableToggle();
 		}
 		
 		if (Input.GetButtonDown ("Open Tool"))
@@ -310,44 +324,12 @@ public class Inventory : MonoBehaviour {
 		{
 			string[] items = inventoryArray[inventoryGrid].Split ();
 			string symbol = items[items.Length-1];
-			
-			if (symbol.Length > 2 && taskManagement.progressionIndex < taskManagement.progression.Length)
+			if (taskManagement.Progress(symbol) == "Done")
 			{
-				if (symbol.Equals(taskManagement.progression[taskManagement.progressionIndex]))
-				{
-					// Success - do something about it
-					usedCompound = symbol;
-					inventory[symbol] += -1;
-					
-					if (taskManagement.progressionIndex == 0)
-					{
-						
-					}
-					if (taskManagement.progressionIndex == 1)
-					{
-						taskManagement.meltClass.melted1 = true;
-					}
-					if (taskManagement.progressionIndex == 2)
-					{
-						taskManagement.dissolveClass.dissolve = true;
-					}
-					if (taskManagement.progressionIndex == 3)
-					{
-						taskManagement.meltClass.melted2 = true;
-					}
-					if (taskManagement.progressionIndex == 4)
-					{
-						
-					}
-					if (taskManagement.progressionIndex == 5)
-					{
-						
-					}
-					
-					Debug.Log ("Success");
-					taskManagement.progressionIndex += 1;
-				}
+				usedCompound = symbol;
+				inventory[symbol] += -1;
 			}
+			
 		}
 	}
 	
@@ -514,6 +496,11 @@ public class Inventory : MonoBehaviour {
 		
 		GUI.skin.button.stretchWidth = false;
 		GUI.skin.button.fontSize = 50;
+		
+		if (tableOpen)
+		{
+			GUI.DrawTexture(new Rect(0,0,1280,773), periodicTable);
+		}
 		
 		if (seenObject != "") 
 		{

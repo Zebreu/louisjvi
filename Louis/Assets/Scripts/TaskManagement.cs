@@ -78,6 +78,48 @@ public class TaskManagement : MonoBehaviour {
 		meltClass = GameObject.Find("Task2-Melt").GetComponent<MeltWall>();
 	}
 	
+	public string Progress(string symbol)
+	{
+		if (symbol.Length > 2 && progressionIndex < progression.Length)
+		{
+			if (symbol.Equals(progression[progressionIndex]))
+			{
+				if (progressionIndex == 0)
+				{
+					GameObject waterwall = GameObject.Find("WaterTask");
+					Destroy (waterwall);
+				}
+				if (progressionIndex == 1)
+				{
+					meltClass.melted1 = true;
+				}
+				if (progressionIndex == 2)
+				{
+					dissolveClass.dissolve = true;
+				}
+				if (progressionIndex == 3)
+				{
+					meltClass.melted2 = true;
+				}
+				if (progressionIndex == 4)
+				{
+					GameObject waterwall = GameObject.Find("HeatTask");
+					Destroy (waterwall);
+				}
+				if (progressionIndex == 5)
+				{
+					
+				}
+				
+				Debug.Log ("Success");
+				progressionIndex += 1;
+				return "Done";
+			}
+		}
+	
+		return "";
+	}
+	
 	public string Combine(string[,] tool, Dictionary<string,List<int[]>> bondsLogic)
 	{
 		int enumerating = 0;

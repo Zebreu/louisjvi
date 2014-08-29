@@ -15,12 +15,14 @@ public class TextTriggering : MonoBehaviour {
 	string[] gameinfos;
 	string[] comms;
 	
+	public Texture2D orbital; 
+	
 	int stringStart = 14;
 	
 	void Start()
 	// Reads in the files storing the text for the game hints and character communications
 	{
-		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\n"}, System.StringSplitOptions.None);
+		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\r\n"}, System.StringSplitOptions.None);
 		comms = File.ReadAllText (comm_filename).Split (new string[] {"</communic>\r\n"}, System.StringSplitOptions.None);
 	}
 	
@@ -91,6 +93,10 @@ public class TextTriggering : MonoBehaviour {
 			Rect labelSize = GUILayoutUtility.GetRect (new GUIContent (text), "box");
 			labelSize.center = new Vector2 (Screen.width / 2f, Screen.height / 2 * 1.2f);
 			GUI.Label (labelSize, text, "box");
+			if (textType.Equals("communic"))
+			{
+				GUI.DrawTexture(new Rect(20,Screen.height-256-20,256,256), orbital);
+			}
 		}
 	}		
 }

@@ -1,2 +1,8 @@
 <communic id="light1">Tu sembles être tombé dans un système de cavernes, est-ce que ça va bien? Ta combinaison semble être en bon état, d'après les signaux que je reçois. Vérifie si ta lampe frontale fonctionne encore.</communic>
-<communic id="water1">Oh non, je détecte qu'il y a eu une fuite dans ton système de régulation de température. La combinaison se répare d'elle-même, mais tu dois trouver de l'eau afin d'alimenter à nouveau le système. Si tu n'en trouves pas, tu vas rapidement atteindre une température dangereuse!</communic>
+<communic id="water1">Oh non, je détecte qu'il y a eu une fuite dans ton système de régulation de température. La combinaison se répare d'elle-même, mais tu dois trouver de l'eau afin d'alimenter à nouveau le système. Si tu n'en trouves pas maintenant, tu vas souffrir d'hyperthermie!</communic>
+<communic id="water1">Ne continue pas à explorer tant que tu n'as pas produit du H2O!</communic>
+<communic id="methane1">Ce qui bloque le tunnel semble être un type de glace, tu pourrais essayer de la faire fondre avec ta torche si tu trouves un carburant comme du méthane</communic>
+<communic id="acid1">Un débris métallique! De l'acide pourrait le dissoudre suffisamment pour que tu puisses passer.</communic>
+<communic id="heat1">La température détectée dans la salle s'élève. Ta combinaison est équipée d'un système de réfrigération, mais tu dois lui fournir un réfrigérant, comme du fréon, avant de progresser.</communic>
+<communic id="ethanol1">La pile à combustible qui produit l'électricité pour l'atterrisseur est vide, mais elle peut être remplie avec de l'éthanol.</communic> 
+<communic id="endcomm1">End</communic>
