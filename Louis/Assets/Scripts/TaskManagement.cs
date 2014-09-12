@@ -38,7 +38,7 @@ public class TaskManagement : MonoBehaviour {
 	
 	public Dissolving dissolveClass;
 	public MeltWall meltClass;
-	
+		
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
 	char c3 = '\u2083';
@@ -103,8 +103,8 @@ public class TaskManagement : MonoBehaviour {
 				}
 				if (progressionIndex == 4)
 				{
-					GameObject waterwall = GameObject.Find("HeatTask");
-					Destroy (waterwall);
+					GameObject heatwall = GameObject.Find("HeatTask");
+					Destroy (heatwall);
 				}
 				if (progressionIndex == 5)
 				{

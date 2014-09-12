@@ -9,6 +9,7 @@ public class MeltWall : MonoBehaviour {
 	int stopped;
 	int stopped2;
 	
+	GameObject torch;
 	// Use this for initialization
 	void Start () 
 	{
@@ -16,6 +17,8 @@ public class MeltWall : MonoBehaviour {
 		toMelt2 = GameObject.FindGameObjectsWithTag("Melt2");
 		melted1 = false;
 		melted2 = false;
+		torch = GameObject.Find ("methanetorch");
+		torch.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -24,6 +27,7 @@ public class MeltWall : MonoBehaviour {
 		stopped = 0;
 		if (melted1)
 		{
+			torch.SetActive(true);
 			foreach(GameObject wallElement in toMelt)
 			{
 				if (wallElement.transform.position.y > 14.8f)
@@ -37,12 +41,14 @@ public class MeltWall : MonoBehaviour {
 			if (stopped == toMelt.Length)
 			{
 				melted1 = false;
+				torch.SetActive(false);
 			}
 		}
 		
 		stopped2 = 0;
 		if (melted2)
 		{
+			torch.SetActive(true);
 			foreach(GameObject wallElement in toMelt2)
 			{
 				if (wallElement.transform.position.y > 32.3f)
@@ -56,6 +62,7 @@ public class MeltWall : MonoBehaviour {
 			if (stopped2 == toMelt2.Length)
 			{
 				melted2 = false;
+				torch.SetActive(false);
 			}
 		}
 	}

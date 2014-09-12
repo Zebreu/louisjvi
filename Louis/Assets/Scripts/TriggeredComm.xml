@@ -4,5 +4,5 @@
 <communic id="methane1">Ce qui bloque le tunnel semble être un type de glace, tu pourrais essayer de la faire fondre avec ta torche si tu trouves un carburant comme du méthane</communic>
 <communic id="acid1">Un débris métallique! De l'acide pourrait le dissoudre suffisamment pour que tu puisses passer.</communic>
 <communic id="heat1">La température détectée dans la salle s'élève. Ta combinaison est équipée d'un système de réfrigération, mais tu dois lui fournir un réfrigérant, comme du fréon, avant de progresser.</communic>
-<communic id="ethanol1">La pile à combustible qui produit l'électricité pour l'atterrisseur est vide, mais elle peut être remplie avec de l'éthanol.</communic> 
+<communic id="ethanol1">La pile à combustible qui produit l'électricité pour l'atterrisseur est vide, mais elle peut être remplie avec de l'éthanol.</communic>
 <communic id="endcomm1">End</communic>
