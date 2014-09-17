@@ -21,6 +21,8 @@ public class Inventory : MonoBehaviour {
 	
 	public Texture2D periodicTable;
 	
+	public Texture2D toolDrawing;
+	
 	private bool useBackup = false;
 	
 	private int inventoryGrid = -1;
