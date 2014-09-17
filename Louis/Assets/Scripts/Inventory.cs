@@ -429,6 +429,8 @@ public class Inventory : MonoBehaviour {
 	{
 		displayInventory();
 		
+		GUI.DrawTexture(new Rect(0,0,2049,823), toolDrawing); //Original size: (0,0,2049,823) 
+		
 		GUI.skin.box.fontSize = 50;
 		GUI.skin.box.alignment = TextAnchor.MiddleCenter;
 		for(int i = 0; i < toolSizeX; i++)
