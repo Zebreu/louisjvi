@@ -326,12 +326,19 @@ public class Inventory : MonoBehaviour {
 		{
 			string[] items = inventoryArray[inventoryGrid].Split ();
 			string symbol = items[items.Length-1];
-			if (taskManagement.Progress(symbol) == "Done")
+			if (inventory[symbol] > 0)
 			{
-				usedCompound = symbol;
-				inventory[symbol] += -1;
+				if (taskManagement.Progress(symbol) == "Done")
+				{
+					usedCompound = symbol;
+					inventory[symbol] += -1;
+					
+					if (usedCompound.Equals("CH"+c4) || usedCompound.Equals ("H"+c2+"SO"+c4))
+					{
+						ToolToggle();
+					}
+				}
 			}
-			
 		}
 	}
 	
@@ -426,10 +433,10 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void displayTool()
-	{
-		displayInventory();
+	{		
+		GUI.DrawTexture(new Rect(-Screen.width*0.058f,Screen.height*0.058f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
 		
-		GUI.DrawTexture(new Rect(0,0,2049,823), toolDrawing); //Original size: (0,0,2049,823) 
+		displayInventory();
 		
 		GUI.skin.box.fontSize = 50;
 		GUI.skin.box.alignment = TextAnchor.MiddleCenter;
