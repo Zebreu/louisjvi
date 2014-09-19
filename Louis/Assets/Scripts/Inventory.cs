@@ -27,6 +27,9 @@ public class Inventory : MonoBehaviour {
 	
 	private int inventoryGrid = -1;
 	
+	int successStates = 0;
+	string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis"};
+	
 	Dictionary<string, int> backupInventory;
 	Dictionary<string, int> inventory = new Dictionary<string, int>();
 	string[] inventoryArray;
@@ -105,25 +108,25 @@ public class Inventory : MonoBehaviour {
 			number = 16;
 		}
 		
-		if (name.Equals ("Carbone"))
+		if (name.Equals ("Carbon"))
 		{
 			symbol = "C";
 			number = 2;
 		}
 		
-		if (name.Equals ("Fluor"))
+		if (name.Equals ("Fluorine"))
 		{
 			symbol = "F";
 			number = 2;
 		}
 		
-		if (name.Equals ("Chlore"))
+		if (name.Equals ("Chlorine"))
 		{
 			symbol = "Cl";
 			number= 2;
 		}
 		
-		if (name.Equals ("Soufre"))
+		if (name.Equals ("Sulfur"))
 		{
 			symbol = "S";
 			number = 2;
@@ -283,6 +286,7 @@ public class Inventory : MonoBehaviour {
 		if (Input.GetButtonDown ("Open Tool"))
 		{
 			ToolToggle ();
+			successStates = 0;
 		}
 		if (Input.GetButtonDown ("Combine") && toolOpen)
 		{
@@ -290,7 +294,9 @@ public class Inventory : MonoBehaviour {
 			if (compound == "None")
 			{
 				Debug.Log("Not available");
+				successStates = 1;
 			} else {
+				successStates = 2;
 				Debug.Log (compound);
 				InventoryFill(compound);
 				useBackup = false;
@@ -333,7 +339,7 @@ public class Inventory : MonoBehaviour {
 					usedCompound = symbol;
 					inventory[symbol] += -1;
 					
-					if (usedCompound.Equals("CH"+c4) || usedCompound.Equals ("H"+c2+"SO"+c4))
+					if (usedCompound.Equals("CH"+c4) || usedCompound.Equals ("H"+c2+"SO"+c4) || usedCompound.Equals("CH"+c3+"CH"+c2+"OH"))
 					{
 						ToolToggle();
 					}
@@ -435,6 +441,10 @@ public class Inventory : MonoBehaviour {
 	void displayTool()
 	{		
 		GUI.DrawTexture(new Rect(-Screen.width*0.058f,Screen.height*0.058f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
+		
+		GUI.skin.box.fontSize = 30;
+		GUI.Label(new Rect(Screen.width*0.365f, Screen.height*0.18f, 450f, 66f), successMessages[successStates],"box");
+		GUI.skin.box.fontSize = 50;
 		
 		displayInventory();
 		

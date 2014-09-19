@@ -63,7 +63,9 @@
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Scripts\TriggeredComm.xml" />
+     <None Include="Assets\Scripts\FrenchTriggeredGameInfo.xml" />
      <None Include="Assets\Materials\FrontCullingDiffuse.shader" />
+     <None Include="Assets\Scripts\FrenchTriggeredComm.xml" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>C:/Users/Administrateur/Documents/GitHub/louisjvi/Louis/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>

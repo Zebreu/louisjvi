@@ -34,6 +34,9 @@ public class TaskManagement : MonoBehaviour {
 	public int progressionIndex;
 	public string[] progression;
 	
+	GameObject player;
+	public Transform textTriggerPrefab;
+	
 	// Classes used to progress in the game
 	
 	public Dissolving dissolveClass;
@@ -76,6 +79,14 @@ public class TaskManagement : MonoBehaviour {
 		
 		dissolveClass = GameObject.Find("debris1").GetComponent<Dissolving>();
 		meltClass = GameObject.Find("Task2-Melt").GetComponent<MeltWall>();
+		player = GameObject.Find ("Player");
+	}
+	
+	void CreateNewTrigger(string triggerName)
+	{
+		Vector3 toSpawn = player.transform.position;
+		UnityEngine.Object newTrigger = Instantiate(textTriggerPrefab,toSpawn,Quaternion.identity);
+		newTrigger.name = triggerName;
 	}
 	
 	public string Progress(string symbol)
@@ -88,14 +99,18 @@ public class TaskManagement : MonoBehaviour {
 				{
 					GameObject waterwall = GameObject.Find("WaterTask");
 					Destroy (waterwall);
+					CreateNewTrigger("communic_waterdone1");
 				}
+				
 				if (progressionIndex == 1)
 				{
 					meltClass.melted1 = true;
+					CreateNewTrigger("communic_methanedone1");
 				}
 				if (progressionIndex == 2)
 				{
 					dissolveClass.dissolve = true;
+					CreateNewTrigger("communic_aciddone1");
 				}
 				if (progressionIndex == 3)
 				{
@@ -105,10 +120,10 @@ public class TaskManagement : MonoBehaviour {
 				{
 					GameObject heatwall = GameObject.Find("HeatTask");
 					Destroy (heatwall);
+					CreateNewTrigger("communic_heatdone1");
 				}
 				if (progressionIndex == 5)
 				{
-					
 				}
 				
 				Debug.Log ("Success");
