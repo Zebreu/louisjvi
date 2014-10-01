@@ -32,7 +32,7 @@ public class TaskManagement : MonoBehaviour {
 	List<string[,]> molecules = new List<string[,]>();
 	
 	public int progressionIndex;
-	public string[] progression;
+	//public string[] progression;
 	
 	GameObject player;
 	public Transform textTriggerPrefab;
@@ -41,7 +41,9 @@ public class TaskManagement : MonoBehaviour {
 	
 	public Dissolving dissolveClass;
 	public MeltWall meltClass;
-		
+	List<GameObject> taskTriggers;
+	List<string> completedTasks;
+	
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
 	char c3 = '\u2083';
@@ -73,15 +75,22 @@ public class TaskManagement : MonoBehaviour {
 		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,ccl2f2v1bonds,ccl2f2v2bonds,ethanolbonds};
 		
 		progressionIndex = 0;
-		progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};
+		//progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};
 	
 		DontDestroyOnLoad(transform.gameObject);
 		
+		taskTriggers = new List<GameObject>(GameObject.FindGameObjectsWithTag("TaskTrigger"));
+		completedTasks = new List<string>();
 		dissolveClass = GameObject.Find("debris1").GetComponent<Dissolving>();
 		meltClass = GameObject.Find("Task2-Melt").GetComponent<MeltWall>();
 		player = GameObject.Find ("Player");
 	}
 	
+	void OnLevelWasLoaded()
+	{
+		taskTriggers = new List<GameObject>(GameObject.FindGameObjectsWithTag("TaskTrigger"));
+		player = GameObject.Find ("Player");
+	}
 	void CreateNewTrigger(string triggerName)
 	{
 		Vector3 toSpawn = player.transform.position;
@@ -91,43 +100,82 @@ public class TaskManagement : MonoBehaviour {
 	
 	public string Progress(string symbol)
 	{
-		if (symbol.Length > 2 && progressionIndex < progression.Length)
-		{
-			if (symbol.Equals(progression[progressionIndex]))
+		List<string> triggeredAll = new List<string>();
+		foreach (GameObject taskTrigger in taskTriggers)
+		{	
+			if (player.collider.bounds.Intersects(taskTrigger.collider.bounds))
 			{
-				if (progressionIndex == 0)
+				triggeredAll.Add (taskTrigger.name);
+			}
+		}
+		
+		foreach(string triggered in triggeredAll)
+		{
+			bool correct = false;
+			if (triggered.Equals("WaterTaskTrigger"))
+			{
+				if (symbol.Equals("H"+c2+"O"))
 				{
 					GameObject waterwall = GameObject.Find("WaterTask");
 					Destroy (waterwall);
 					CreateNewTrigger("communic_waterdone1");
+					correct = true;
 				}
-				
-				if (progressionIndex == 1)
+			}
+			else if (triggered.Equals("Methane1TaskTrigger"))
+			{
+				if (symbol.Equals("CH"+c4))
 				{
 					meltClass.melted1 = true;
 					CreateNewTrigger("communic_methanedone1");
+					correct = true;
 				}
-				if (progressionIndex == 2)
+			}
+			else if (triggered.Equals("Methane2TaskTrigger"))
+			{
+				if (symbol.Equals("CH"+c4))
+				{
+					meltClass.melted2 = true;
+					correct = true;
+				}
+			}
+			else if (triggered.Equals("AcidTaskTrigger"))
+			{
+				if (symbol.Equals("H"+c2+"SO"+c4))
 				{
 					dissolveClass.dissolve = true;
 					CreateNewTrigger("communic_aciddone1");
+					correct = true;
 				}
-				if (progressionIndex == 3)
-				{
-					meltClass.melted2 = true;
-				}
-				if (progressionIndex == 4)
+			}
+			else if (triggered.Equals("FreonTaskTrigger"))
+			{
+				if (symbol.Equals("CCl"+c2+"F"+c2))
 				{
 					GameObject heatwall = GameObject.Find("HeatTask");
 					Destroy (heatwall);
 					CreateNewTrigger("communic_heatdone1");
+					correct = true;
 				}
-				if (progressionIndex == 5)
-				{
+			}
+			else if (triggered.Equals("EthanolTaskTrigger"))
+			{
+				//if (symbol.Equals("CH"+c3+"CH"+c2+"OH"))
+				if (symbol.Equals("H"+c2+"O"))
+				{	
+					GameObject lander = GameObject.Find ("Lander");
+					lander.GetComponent<Launch>().Launching();
+					correct = true;
 				}
-				
-				Debug.Log ("Success");
+			}
+			
+			if (correct)
+			{
+				completedTasks.Add(triggered);
 				progressionIndex += 1;
+				GameObject toRemove = GameObject.Find (triggered);
+				taskTriggers.Remove(toRemove);
+				Debug.Log ("Success");
 				return "Done";
 			}
 		}
