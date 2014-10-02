@@ -160,8 +160,8 @@ public class TaskManagement : MonoBehaviour {
 			}
 			else if (triggered.Equals("EthanolTaskTrigger"))
 			{
-				//if (symbol.Equals("CH"+c3+"CH"+c2+"OH"))
-				if (symbol.Equals("H"+c2+"O"))
+				//if (symbol.Equals("H"+c2+"O"))
+				if (symbol.Equals("CH"+c3+"CH"+c2+"OH"))
 				{	
 					GameObject lander = GameObject.Find ("Lander");
 					lander.GetComponent<Launch>().Launching();
