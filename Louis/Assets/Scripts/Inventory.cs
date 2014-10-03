@@ -443,12 +443,12 @@ public class Inventory : MonoBehaviour {
 		GUI.skin.box.fontSize = 30;
 			
 		// Config #1
-		//GUI.DrawTexture(new Rect(-Screen.width*0.058f,Screen.height*0.058f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
-		//GUI.Label(new Rect(Screen.width*0.365f, Screen.height*0.18f, 450f, 66f), successMessages[successStates],"box");
+		GUI.DrawTexture(new Rect(-Screen.width*0.058f,Screen.height*0.058f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
+		GUI.Label(new Rect(Screen.width*0.365f, Screen.height*0.18f, 450f, 66f), successMessages[successStates],"box");
 		
 		// Config #2
-		GUI.DrawTexture(new Rect(-Screen.width*0.02f,Screen.height*0.08f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
-		GUI.Label(new Rect(Screen.width*0.375f, Screen.height*0.198f, 450f, 60f), successMessages[successStates],"box");
+		//GUI.DrawTexture(new Rect(-Screen.width*0.02f,Screen.height*0.08f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
+		//GUI.Label(new Rect(Screen.width*0.375f, Screen.height*0.198f, 450f, 60f), successMessages[successStates],"box");
 		
 		
 		GUI.skin.box.fontSize = 50;
