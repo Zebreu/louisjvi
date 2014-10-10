@@ -30,6 +30,13 @@ public class Inventory : MonoBehaviour {
 	int successStates = 0;
 	string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis"};
 	
+	int pastIndex;
+	List<Dictionary<string, int>> pastInventories;
+	List<Dictionary<string, List<int[]>>> pastBonds;
+	List<Dictionary<Rect, Texture2D>> pastVisibleBonds;
+	List<string[,]> pastTool;
+	
+	
 	Dictionary<string, int> backupInventory;
 	Dictionary<string, int> inventory = new Dictionary<string, int>();
 	string[] inventoryArray;
@@ -42,7 +49,7 @@ public class Inventory : MonoBehaviour {
 	int toolSizeX = 6;
 	int toolSizeY = 4;
 	
-	private string[,] toolContents;
+	string[,] toolContents;
 	
 	int buttonSize = 80;
 	int spacing = 3;	  
@@ -50,6 +57,11 @@ public class Inventory : MonoBehaviour {
 	int offsetY;
 	
 	string usedCompound;
+	
+	public bool journalShown;
+	public string journal = "";
+	public Vector2 scrollPosition;
+	GUIStyle journalStyle;
 	
 	// Unicode characters for subscripts used in compound formulas
 	char c2 = '\u2082';
@@ -73,11 +85,26 @@ public class Inventory : MonoBehaviour {
 		DontDestroyOnLoad(transform.gameObject);
 		
 		usedCompound = "";
+		
+		journalShown = false;
+		journalStyle = new GUIStyle ();
+		journalStyle.fontSize = 16;
+		journalStyle.wordWrap = true;
+		journalStyle.normal.textColor = Color.white;
 	}
 	
 	void OnLevelWasLoaded()
 	{
 		mainCamera = Camera.main;
+	}
+	
+	void showJournal()
+	{
+		GUILayout.BeginArea (new Rect (60, 5, 1400, 200));
+		scrollPosition = GUILayout.BeginScrollView (scrollPosition, GUILayout.Width(1400), GUILayout.Height(200));
+		GUILayout.Label (journal,journalStyle);
+		GUILayout.EndScrollView ();
+		GUILayout.EndArea ();
 	}
 	
 	void CalculateOffset()
@@ -247,7 +274,14 @@ public class Inventory : MonoBehaviour {
 			bondsLogic.Add ("II",new List<int[]>());
 			newBond = true;
 			
+			pastTool = new List<string[,]>();
+			pastInventories = new List<Dictionary<string, int>>();
+			pastBonds = new List<Dictionary<string, List<int[]>>>();
+			pastVisibleBonds = new List<Dictionary<Rect, Texture2D>>();
+			pastIndex = -1;
+			
 			toolContents = new string[toolSizeX,toolSizeY];
+			
 			for(int i = 0; i < toolSizeX; i++)
 			{
 				for(int j = 0; j< toolSizeY; j++)
@@ -258,10 +292,15 @@ public class Inventory : MonoBehaviour {
 			CalculateOffset();
 			useBackup = true;
 			backupInventory = new Dictionary<string, int>(inventory);
+			
+			keepHistory();			
 		} else {
 			toolOpen = false;
 			inventoryOpen = false;
-			Screen.lockCursor = true;
+			if (!journalShown)
+			{
+				Screen.lockCursor = true;
+			}
 			inventoryGrid = -1;
 			if (useBackup) 
 			{
@@ -275,8 +314,51 @@ public class Inventory : MonoBehaviour {
 		}	
 	}
 	
+	/*
+	pastIndex += 1;
+		Debug.Log(pastIndex);
+		string[,] tempTool = new string[toolSizeX,toolSizeY];
+		Array.Copy(toolContents,tempTool,toolContents.Length);
+		pastTool.Add(tempTool);
+		pastInventories.Add(new Dictionary<string,int>(inventory));
+		
+		Dictionary<string, List<int[]>> tempBonds = new Dictionary<string, List<int[]>>(bondsLogic);
+		tempBonds["I"] = new List<int[]>(bondsLogic["I"]);
+		tempBonds["II"] = new List<int[]>(bondsLogic["II"]);
+		pastBonds.Add (tempBonds);
+		pastVisibleBonds.Add (new Dictionary<Rect, Texture2D>(bonds));
+	*/
+	
+	void UndoAction()
+	{
+		pastIndex += -1;
+		if (pastIndex >= 0)
+		{
+			Array.Copy (pastTool[pastIndex],toolContents, pastTool[pastIndex].Length);
+
+			inventory = new Dictionary<string, int>(pastInventories[pastIndex]);
+			bondsLogic = new Dictionary<string, List<int[]>>(pastBonds[pastIndex]);
+			bondsLogic["I"] = new List<int[]>(pastBonds[pastIndex]["I"]);
+			bondsLogic["II"] = new List<int[]>(pastBonds[pastIndex]["II"]);
+			printBonds ();
+			bonds = new Dictionary<Rect, Texture2D>(pastVisibleBonds[pastIndex]);
+			Debug.Log (pastIndex);
+			
+			pastTool.RemoveAt(pastIndex+1);
+			pastInventories.RemoveAt(pastIndex+1);
+			pastBonds.RemoveAt(pastIndex+1);
+			pastVisibleBonds.RemoveAt(pastIndex+1);
+	
+		}
+	}
+	
 	void Update () {
 		Selection ();
+		
+		if (Input.GetKeyDown ("z") && toolOpen)
+		{
+			UndoAction ();
+		}
 		
 		if (Input.GetButtonDown("Open Inventory"))
 		{
@@ -302,6 +384,14 @@ public class Inventory : MonoBehaviour {
 				useBackup = false;
 				ToolToggle ();
 				ToolToggle ();
+			}
+		}
+		if (Input.GetButtonDown ("Show Journal"))
+		{
+			journalShown = !journalShown;
+			if (!inventoryOpen)
+			{
+				Screen.lockCursor = !journalShown;
 			}
 		}
 	}
@@ -438,6 +528,35 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 	
+	void keepHistory()
+	// Keeps a snapshot of the Chemical Synthesis Tool in order to allow undo operations
+	{
+		pastIndex += 1;
+		Debug.Log(pastIndex);
+		string[,] tempTool = new string[toolSizeX,toolSizeY];
+		Array.Copy(toolContents,tempTool,toolContents.Length);
+		pastTool.Add(tempTool);
+		pastInventories.Add(new Dictionary<string,int>(inventory));
+		
+		Dictionary<string, List<int[]>> tempBonds = new Dictionary<string, List<int[]>>(bondsLogic);
+		tempBonds["I"] = new List<int[]>(bondsLogic["I"]);
+		tempBonds["II"] = new List<int[]>(bondsLogic["II"]);
+		pastBonds.Add (tempBonds);
+		pastVisibleBonds.Add (new Dictionary<Rect, Texture2D>(bonds));
+	}
+	
+	void printBonds()
+	{
+		foreach(KeyValuePair<string, List<int[]>> item in bondsLogic)
+		{
+			Debug.Log (item.Key);
+			foreach(int[] listitem in item.Value)
+			{
+				Debug.Log (listitem[0]+","+listitem[1]+","+listitem[2]+","+listitem[3]);
+			}
+		}
+	}
+	
 	void displayTool()
 	{	
 		GUI.skin.box.fontSize = 30;
@@ -484,14 +603,9 @@ public class Inventory : MonoBehaviour {
 									
 									bondsLogic[symbol].Add (bondPair);
 									
-									foreach(KeyValuePair<string, List<int[]>> item in bondsLogic)
-									{
-										Debug.Log (item.Key);
-										foreach(int[] listitem in item.Value)
-										{
-											Debug.Log (listitem[0]+","+listitem[1]+","+listitem[2]+","+listitem[3]);
-										}
-									}
+									keepHistory();
+									
+									printBonds();
 									
 									bondPair = new int[4];
 									newBond = true;
@@ -503,6 +617,8 @@ public class Inventory : MonoBehaviour {
 							} else {
 								toolContents[i,j] = symbol;
 								inventory[symbol] += -1;
+								
+								keepHistory();
 							}
 						}
 					}
@@ -548,6 +664,10 @@ public class Inventory : MonoBehaviour {
 				GUI.DrawTexture(new Rect((Screen.width) / 2 - 18, (Screen.height) /2 - 18, circle.width, circle.height),circle);
 				// Value of 18 seems best to center the crosshair, larger than Unity's calculated width (16*2) and smaller than the real texture's width (20*2)
 			}
+		}
+		if (journalShown)
+		{
+			showJournal();
 		}
 	}
 }

@@ -15,28 +15,18 @@ public class TextTriggering : MonoBehaviour {
 	string[] gameinfos;
 	string[] comms;
 
-	bool journalShown;
-	string journal = "";
-
-	Vector2 scrollPosition;
-
 	public Texture2D orbital; 
 	
 	int stringStart = 14;
-
-	GUIStyle journalStyle;
+	
+	Inventory inventoryJournal;
 	
 	void Start()
 	// Reads in the files storing the text for the game hints and character communications
 	{
 		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\r\n"}, System.StringSplitOptions.None);
 		comms = File.ReadAllText (comm_filename).Split (new string[] {"</communic>\r\n"}, System.StringSplitOptions.None);
-
-		journalShown = false;
-		journalStyle = new GUIStyle ();
-		journalStyle.fontSize = 16;
-		journalStyle.wordWrap = true;
-		journalStyle.normal.textColor = Color.white;
+		inventoryJournal = GameObject.Find ("Inventory").GetComponent<Inventory>();
 	}
 	
 	public void GetTrigger(string triggerName)
@@ -48,7 +38,10 @@ public class TextTriggering : MonoBehaviour {
 		display = FindText();
 	}
 
-
+	void OnLevelWasLoaded()
+	{
+		inventoryJournal = GameObject.Find ("Inventory").GetComponent<Inventory>();
+	}
 
 	bool FindText()
 	// Finds the right string to display depending on the box reached by the player
@@ -66,21 +59,12 @@ public class TextTriggering : MonoBehaviour {
 			if (item.Contains(textID))
 			{
 				text = item.Substring (stringStart+textID.Length+2);
-				journal += text+"\n\n";
-				scrollPosition = new Vector2(scrollPosition.x, Mathf.Infinity);
+				inventoryJournal.journal += text+"\n\n";
+				inventoryJournal.scrollPosition = new Vector2(inventoryJournal.scrollPosition.x, Mathf.Infinity);
 				return true;
 			}
 		}
 		return false;		
-	}
-
-	void showJournal()
-	{
-		GUILayout.BeginArea (new Rect (60, 5, 800, 200));
-		scrollPosition = GUILayout.BeginScrollView (scrollPosition, GUILayout.Width(800), GUILayout.Height(200));
-		GUILayout.Label (journal,journalStyle);
-		GUILayout.EndScrollView ();
-		GUILayout.EndArea ();
 	}
 
 	void Update()
@@ -106,27 +90,10 @@ public class TextTriggering : MonoBehaviour {
 				display = FindText ();			
 			}
 		}
-		if (Input.GetButtonDown ("Show Journal"))
-		{
-			if (journalShown)
-			{
-				journalShown = false;
-			} else
-			{
-				journalShown = true;
-			}
-
-			Screen.lockCursor = !journalShown;
-			
-		}
 	}
 	
 	void OnGUI()
 	{
-		if (journalShown) 
-		{
-			showJournal ();
-		}
 		if (display)
 		{
 			GUI.skin.box.fontSize = 30;

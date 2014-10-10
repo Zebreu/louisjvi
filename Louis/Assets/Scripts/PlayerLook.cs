@@ -24,7 +24,7 @@ public class PlayerLook : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!inventory.inventoryOpen)
+		if (!inventory.inventoryOpen && !inventory.journalShown)
 		{
 			body.transform.Rotate (new Vector3 (0, Input.GetAxis ("Mouse X") * sensibility, 0), Space.World);
 			transform.Rotate (new Vector3 (-Input.GetAxis ("Mouse Y") * sensibility, 0, 0));
