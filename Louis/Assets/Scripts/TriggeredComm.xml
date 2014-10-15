@@ -1,4 +1,4 @@
-<communic id="light1">What happened, did you just fall? Wow, that is some bad luck, maybe  you hit some kind of sinkhole when you were surveying the surface. Your suit seems fine, signals look good and I can still access your camera.  It's dark in there though, you should check your headlamp</communic>
+<communic id="light1">What happened, did you just fall? Wow, that is some bad luck, maybe you hit some kind of sinkhole when you were surveying the surface. Your suit seems fine, signals look good and I can still access your camera. It's dark in there though, you should check your headlamp</communic>
 <communic id="water1">Oh wait, there was a leak in your temperature regulation system! Stop moving! The suit is self-repairing, but you'll need to fill the system with water (H₂O) before you go forward, otherwise you'll heat up badly</communic>
 <communic id="waterdone1">Good! Now let's explore this place. Maps indicate that the cavern system you fell into has an exit not too far from your lander, so you should be able to get back quickly enough</communic>
 <communic id="methane1">Some kind of ice is blocking that tunnel, you might be able to melt it with your methane (CH₄) torch</communic>
@@ -7,5 +7,5 @@
 <communic id="aciddone1">That did the trick, you'll be able to go through</communic>
 <communic id="heat1">The temperature is climbing here, you can't go forward. Given a better refrigerant, like freon (CCl₂F₂), your suit could deal with it</communic>
 <communic id="heatdone1">We're pretty lucky you found that chlorine! You must be near the surface now</communic>
-<communic id="ethanol1">Looks like your ethanol (CH₃CH₂OH) fuel cell is empty, but I bet you can fill it up. Once you've done that, you'll be good to go! See you soon on the orbiter</communic>
+<communic id="ethanol1">Looks like your ethanol (C₂H₆O) fuel cell is empty, but I bet you can fill it up. Once you've done that, you'll be good to go! See you soon on the orbiter</communic>
 <communic id="endcomm1">End</communic>

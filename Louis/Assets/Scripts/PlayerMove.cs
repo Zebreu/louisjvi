@@ -62,9 +62,14 @@ public class PlayerMove : MonoBehaviour {
 		grounded = false;
 	}
 
-	void OnCollisionStay()
+	void OnCollisionStay(Collision collisionInfo)
 	{
-		grounded = true;
+		if (collisionInfo.gameObject.tag.Equals("cannotjump"))
+		{
+			grounded = false;
+		} else {
+			grounded = true;
+		}
 	}
 
 }

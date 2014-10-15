@@ -143,6 +143,8 @@ public class TaskManagement : MonoBehaviour {
 			{
 				if (symbol.Equals("H"+c2+"SO"+c4))
 				{
+					GameObject acidcube = GameObject.Find ("AcidCube");
+					Destroy (acidcube);
 					dissolveClass.dissolve = true;
 					CreateNewTrigger("communic_aciddone1");
 					correct = true;
