@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\LevelGenerator.cs" />
      <Compile Include="Assets\Scripts\BoxTextTrigger.cs" />
      <Compile Include="Assets\Scripts\Dissolving.cs" />
      <Compile Include="Assets\Scripts\EquationBalance.cs" />
