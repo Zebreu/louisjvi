@@ -3,7 +3,9 @@ using System.Collections;
 
 public class RecordingData : MonoBehaviour {
 	private EyeTrackingClass eyeTrackingData;
+	private EmotivTracking emotivTrackingData;
 	private string eyetracking_log = @"C:\Users\locarno\Desktop\DataLog\eyetracking_log";
+	private string eeg_log = @"C:\Users\locarno\Desktop\DataLog\eeg_log";
 	public bool logging = false; 
 
 	// Use this for initialization
@@ -13,6 +15,7 @@ public class RecordingData : MonoBehaviour {
 		{
 			GameObject eyeTracking = GameObject.Find("EyeTracking");
 			eyeTrackingData = eyeTracking.GetComponent<EyeTrackingClass>();
+			emotivTrackingData = GameObject.Find ("EEGTracking").GetComponent<EmotivTracking>();
 		}
 	}
 	
