@@ -13,6 +13,12 @@ public class EmotivTracking : MonoBehaviour {
 	
 	static Profile profile;
 	
+	static double shortTerm = 0;
+	static double longTerm = 0;
+	static double meditation = 0;
+	static double frustration = 0;
+	static double boredom = 0;
+	
 	static void engine_EmoEngineConnected(object sender, EmoEngineEventArgs e)
 	{
 		Console.WriteLine("connected");
@@ -177,8 +183,14 @@ public class EmotivTracking : MonoBehaviour {
 			Console.WriteLine("Affectiv Frustation : Raw Score {0:f5} Min Scale {1:f5} max Scale {2:f5} Scaled Score {3:f5}\n", rawScoreFt, minScaleFt, maxScaleFt, scaledScoreFt);
 		}
 		
-		Debug.Log ("Long term excitation: "+longTermExcitementScore.ToString());
-		Debug.Log ("Frustration score: "+frustrationScore.ToString());
+		shortTerm = (double) shortTermExcitementScore;
+		longTerm = (double) longTermExcitementScore;
+		meditation = (double) meditationScore;
+		frustration = (double) frustrationScore;
+		boredom = (double) boredomScore;
+		
+		//Debug.Log ("Long term excitation: "+longTermExcitementScore.ToString());
+		//Debug.Log ("Frustration score: "+frustrationScore.ToString());
 		/*
 		affLog.Write(
 			"{0},{1},{2},{3},{4},{5},",
@@ -196,6 +208,9 @@ public class EmotivTracking : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		
+		DontDestroyOnLoad(transform.gameObject);
+	
 		if (tracking)
 		{
 			engine = EmoEngine.Instance;
@@ -229,8 +244,16 @@ public class EmotivTracking : MonoBehaviour {
 		}
 	}
 	
+	public double[] getAffectivData()
+	{
+		return new double[] {shortTerm, longTerm, meditation, frustration, boredom};
+	}
+	
 	void OnApplicationQuit()
 	{
-		engine.Disconnect();
+		if (tracking)
+		{
+			engine.Disconnect();
+		}
 	}
 }

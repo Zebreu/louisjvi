@@ -46,6 +46,7 @@ public class EyeTrackingClass : MonoBehaviour {
 
 	void Start () 
 	{
+		DontDestroyOnLoad(transform.gameObject);
 		gameObject.SetActive (tracking); // Disables eye tracking 
 		if (tracking)
 		{

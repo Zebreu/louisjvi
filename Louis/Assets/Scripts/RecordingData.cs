@@ -10,6 +10,7 @@ public class RecordingData : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		DontDestroyOnLoad(transform.gameObject);
 		gameObject.SetActive(logging);
 		if (logging)
 		{

@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\RecordingData.cs" />
      <Compile Include="Assets\Scripts\TaskManagement.cs" />
      <Compile Include="Assets\Scripts\TextTriggering.cs" />
+     <Compile Include="Assets\Scripts\UserModel.cs" />
      <None Include="Assets\Scripts\TriggeredGameInfo.xml" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
