@@ -32,10 +32,15 @@ public class TextTriggering : MonoBehaviour {
 	public void GetTrigger(string triggerName)
 	// Called by invisible box colliding with the player
 	{
+		while (display)
+		{
+			CycleTextBox();
+		}
 		string[] TypeAndID = triggerName.Split('_');
 		textType = TypeAndID[0];
 		textID = TypeAndID[1];
 		display = FindText();
+		
 	}
 
 	void OnLevelWasLoaded()
@@ -67,28 +72,35 @@ public class TextTriggering : MonoBehaviour {
 		return false;		
 	}
 
-	void Update()
+	void CycleTextBox()
 	// Allows the player to turn off the string displayed. Links IDs by their number (inventory1, inventory2, etc.) 
 	// as well as between character comms and game hints (comm_light1 to gameinfo_light1)
 	{
+		display = false;
+		
+		// Assumes no more than 9 strings will be linked
+		string tempString = textID.Substring(textID.Length-1);
+		int tempInt = Convert.ToInt32 (tempString)+1;
+		tempString = Convert.ToString (tempInt);
+		
+		textID = textID.Substring(0,textID.Length-1)+tempString;		
+		display = FindText ();
+		
+		if (textType.Equals("communic") && !display)
+		{
+			textType = "gameinfo";
+			textID = textID.Substring(0,textID.Length-1)+"1";
+			display = FindText ();			
+		}
+		
+	}
+
+	void Update()
+	
+	{
 		if (Input.GetButtonDown ("Confirm") && display)
 		{
-			display = false;
-			
-			// Assumes no more than 9 strings will be linked
-			string tempString = textID.Substring(textID.Length-1);
-			int tempInt = Convert.ToInt32 (tempString)+1;
-			tempString = Convert.ToString (tempInt);
-			
-			textID = textID.Substring(0,textID.Length-1)+tempString;		
-			display = FindText ();
-			
-			if (textType.Equals("communic") && !display)
-			{
-				textType = "gameinfo";
-				textID = textID.Substring(0,textID.Length-1)+"1";
-				display = FindText ();			
-			}
+			CycleTextBox();
 		}
 	}
 	

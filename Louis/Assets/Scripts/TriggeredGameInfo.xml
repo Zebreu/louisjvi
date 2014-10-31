@@ -1,6 +1,5 @@
 <gameinfo id="move1">Press J to see a journal of the text you'll be reading, W, A, S, and D to move around, Space bar to jump, and Enter (or Return) to close text boxes (such as this one)</gameinfo>
-<gameinfo id="move2">Please read all text boxes before going forward, otherwise you might miss some crucial information</gameinfo>
-<gameinfo id="move3">If you're looking at an item and its name appears, you can press the mouse left button to gather it</gameinfo>
+<gameinfo id="move2">If you're looking at an item and its name appears, you can press the mouse left button to gather it</gameinfo>
 <gameinfo id="light1">Press L to toggle your headlamp</gameinfo>
 <gameinfo id="inventory1">Press O to display your Chemical Synthesis Tool</gameinfo>
 <gameinfo id="inventory2">You can select an element from the array below by clicking on it, and place it in the tool by clicking on a cell. Press Z to undo an action</gameinfo>

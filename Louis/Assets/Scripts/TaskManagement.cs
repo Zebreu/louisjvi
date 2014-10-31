@@ -99,6 +99,7 @@ public class TaskManagement : MonoBehaviour {
 	}
 	
 	public string Progress(string symbol)
+	// A task can be triggered if the player uses the compound within a TriggerBox
 	{
 		List<string> triggeredAll = new List<string>();
 		foreach (GameObject taskTrigger in taskTriggers)

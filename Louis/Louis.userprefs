@@ -1,12 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UserModel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\TextTriggering.cs">
     <Files>
-      <File FileName="Assets\Scripts\UserModel.cs" Line="32" Column="1" />
-      <File FileName="Assets\Scripts\EmotivTracking.cs" Line="39" Column="34" />
-      <File FileName="Assets\Scripts\EyeTrackingClass.cs" Line="83" Column="13" />
-      <File FileName="Assets\Scripts\RecordingData.cs" Line="31" Column="1" />
-      <File FileName="Assets\Scripts\UserModel.cs" Line="22" Column="25" />
+      <File FileName="Assets\Scripts\UserModel.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UserModel.cs" Line="44" Column="57" />
+      <File FileName="Assets\Scripts\RecordingData.cs" Line="32" Column="5" />
+      <File FileName="Assets\Scripts\TextTriggering.cs" Line="93" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
