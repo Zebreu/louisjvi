@@ -38,7 +38,7 @@ public class Inventory : MonoBehaviour {
 	
 	
 	Dictionary<string, int> backupInventory;
-	Dictionary<string, int> inventory = new Dictionary<string, int>();
+	public Dictionary<string, int> inventory = new Dictionary<string, int>();
 	string[] inventoryArray;
 	
 	int[] bondPair = new int[4];
@@ -180,6 +180,12 @@ public class Inventory : MonoBehaviour {
 		if (name.Equals("ccl2f2"))
 		{
 			symbol = "CCl"+c2+"F"+c2;
+			number = 1;
+		}
+		
+		if (name.Equals("chloro"))
+		{
+			symbol = "C"+c2+"F"+c3+"Cl";
 			number = 1;
 		}
 		
