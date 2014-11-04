@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
+// Chlorotrifluoroethylene (CTFE) is a chlorofluorocarbon with chemical formula CF2CClF or C2F3Cl
+
 public class TaskManagement : MonoBehaviour {
 	string[,] h2o = new string[,] {{"H"},{"O"},{"H"}};
 	List<int[]> h2obonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}};
@@ -22,6 +24,17 @@ public class TaskManagement : MonoBehaviour {
 	List<int[]> ccl2f2bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,2,1}, new int[4]{1,1,1,2}, new int[4]{1,1,0,1}};
 	Dictionary<string,List<int[]>> ccl2f2v1bonds = new Dictionary<string, List<int[]>>();
 	Dictionary<string,List<int[]>> ccl2f2v2bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] chloro1 = new string[,]{{"F","C","F"}, {"Cl","C","F"}};
+	string[,] chloro2 = new string[,]{{"F","C","F"}, {"F","C","Cl"}};
+	string[,] chloro3 = new string[,]{{"F","C","Cl"}, {"F","C","F"}};
+	string[,] chloro4 = new string[,]{{"Cl","C","F"}, {"F","C","F"}};
+	List<int[]> chlorobonds1 = new List<int[]>{new int[4]{0,0,0,1}, new int[4]{0,1,0,2}, new int[4]{1,0,1,1}, new int[4]{1,1,1,2}};
+	List<int[]> chlorobonds2 = new List<int[]>{new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> chloro1bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> chloro2bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> chloro3bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> chloro4bonds = new Dictionary<string, List<int[]>>();
 	
 	string[,] ethanol = new string[,] {{"","H",""}, {"H","C","H"}, {"H","C","H"}, {"","O",""}, {"","H",""}};
 	List<int[]> ethanolbonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{2,1,3,1}, new int[4]{3,1,4,1}, new int[4]{1,1,1,0}, new int[4]{1,1,2,1}, new int[4]{2,1,2,0}, new int[4]{2,1,2,2}};
@@ -54,25 +67,38 @@ public class TaskManagement : MonoBehaviour {
 		molecules.Add(h2o);
 		molecules.Add(ch4);
 		molecules.Add (h2so4);
-		molecules.Add (ccl2f2v1);
-		molecules.Add (ccl2f2v2);
+		molecules.Add(chloro1);
+		molecules.Add(chloro2);
+		molecules.Add(chloro3);
+		molecules.Add(chloro4);
+		//molecules.Add (ccl2f2v1);
+		//molecules.Add (ccl2f2v2);
 		molecules.Add (ethanol);
-		names = new string[]{"h2o","ch4","h2so4","ccl2f2","ccl2f2","ethanol"};
-		
+		//names = new string[]{"h2o","ch4","h2so4","ccl2f2","ccl2f2","ethanol"};
+		names = new string[]{"h2o","ch4","h2so4","chloro","chloro","chloro","chloro","ethanol"};
 		h2obonds.Add ("I",h2obonds1);
 		h2obonds.Add ("II", new List<int[]>());
 		ch4bonds.Add ("I",ch4bonds1);
 		ch4bonds.Add ("II", new List<int[]>());
 		h2so4bonds.Add ("I", h2so4bonds1);
 		h2so4bonds.Add ("II", h2so4bonds2);
-		ccl2f2v1bonds.Add ("I",ccl2f2bonds1);
-		ccl2f2v1bonds.Add ("II", new List<int[]>());
-		ccl2f2v2bonds.Add ("I",ccl2f2bonds1);
-		ccl2f2v2bonds.Add ("II", new List<int[]>());
+		chloro1bonds.Add("I",chlorobonds1);
+		chloro1bonds.Add("II",chlorobonds2);
+		chloro2bonds.Add("I",chloro1bonds1);
+		chloro2bonds.Add("II",chlorobonds2);
+		chloro3bonds.Add("I",chloro1bonds1);
+		chloro3bonds.Add("II",chlorobonds2);
+		chloro4bonds.Add("I",chloro1bonds1);
+		chloro4bonds.Add("II",chlorobonds2);
+		//ccl2f2v1bonds.Add ("I",ccl2f2bonds1);
+		//ccl2f2v1bonds.Add ("II", new List<int[]>());
+		//ccl2f2v2bonds.Add ("I",ccl2f2bonds1);
+		//ccl2f2v2bonds.Add ("II", new List<int[]>());
 		ethanolbonds.Add ("I",ethanolbonds1);
 		ethanolbonds.Add ("II", new List<int[]>());
 																						
-		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,ccl2f2v1bonds,ccl2f2v2bonds,ethanolbonds};
+		//allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,ccl2f2v1bonds,ccl2f2v2bonds,ethanolbonds};
+		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,ethanolbonds};
 		
 		progressionIndex = 0;
 		//progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};
@@ -153,7 +179,8 @@ public class TaskManagement : MonoBehaviour {
 			}
 			else if (triggered.Equals("FreonTaskTrigger"))
 			{
-				if (symbol.Equals("CCl"+c2+"F"+c2))
+				//if (symbol.Equals("CCl"+c2+"F"+c2))
+				if (symbol.Equals("C"+c2+"F"+c3+"Cl"))
 				{
 					GameObject heatwall = GameObject.Find("HeatTask");
 					Destroy (heatwall);
