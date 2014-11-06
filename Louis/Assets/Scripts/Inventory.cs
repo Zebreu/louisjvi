@@ -265,7 +265,7 @@ public class Inventory : MonoBehaviour {
 		}	
 	}
 	
-	void ToolToggle()
+	public void ToolToggle()
 	{
 		if (!toolOpen)
 		{
