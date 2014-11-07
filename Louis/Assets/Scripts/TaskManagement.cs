@@ -84,11 +84,11 @@ public class TaskManagement : MonoBehaviour {
 		h2so4bonds.Add ("II", h2so4bonds2);
 		chloro1bonds.Add("I",chlorobonds1);
 		chloro1bonds.Add("II",chlorobonds2);
-		chloro2bonds.Add("I",chloro1bonds1);
+		chloro2bonds.Add("I",chlorobonds1);
 		chloro2bonds.Add("II",chlorobonds2);
-		chloro3bonds.Add("I",chloro1bonds1);
+		chloro3bonds.Add("I",chlorobonds1);
 		chloro3bonds.Add("II",chlorobonds2);
-		chloro4bonds.Add("I",chloro1bonds1);
+		chloro4bonds.Add("I",chlorobonds1);
 		chloro4bonds.Add("II",chlorobonds2);
 		//ccl2f2v1bonds.Add ("I",ccl2f2bonds1);
 		//ccl2f2v1bonds.Add ("II", new List<int[]>());

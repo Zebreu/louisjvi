@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AdaptationElements : MonoBehaviour {
     
@@ -9,21 +10,28 @@ public class AdaptationElements : MonoBehaviour {
     Inventory inventory;
     public Transform textTriggerPrefab;
     
-    List<string> acidTips = new List<string>{"communic_lewisChargeTip1","communic_lewisAcidTip1", "communic_lewisFormulaTip1"};
-    List<string> navigationTips = new List<string>{"communic_navigationTipQuantity1"};
-    List<string> ethanolTips = new List<string>{"communic_ethanolTip1"};
+	List<string> generalTips = new List<string>{"gameinfo_lewisCenterTip1", "gameinfo_lewisValenceTip1"};
+	List<string> heatTips = new List<string>{"gameinfo_lewisCTFETip1"};
+    List<string> acidTips = new List<string>{"gameinfo_lewisChargeTip1","gameinfo_lewisAcidTip1", "gameinfo_lewisFormulaTip1"};
+	List<string> navigationTips = new List<string>{"gameinfo_navigationTipQuantity1","gameinfo_navigationTip1"};
+    List<string> ethanolTips = new List<string>{"gameinfo_ethanolTip1"};
+
+	//List<string> challenges = new List<string>{"MoveStairs","Earthquake"};
+
+	bool earthquaked = false;
+	bool movedstairs = false;
     
     void Start()
     {
         DontDestroyOnLoad(transform.gameObject);
         
-        taskManagement = GameObject.Find("TaskManagement").GetComponent<TaskManagement>();
+        taskManagement = GameObject.Find("Tasks").GetComponent<TaskManagement>();
         player = GameObject.Find("Player");
         inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
         mainCamera = Camera.main;
     }
     
-    OnLevelWasLoaded()
+    void OnLevelWasLoaded()
     {
         Start();
     }
@@ -34,73 +42,115 @@ public class AdaptationElements : MonoBehaviour {
 		UnityEngine.Object newTrigger = Instantiate(textTriggerPrefab,toSpawn,Quaternion.identity);
 		newTrigger.name = triggerName;
 	}
+
+	void MoveStairs()
+	{
+		GameObject[] stairs = GameObject.FindGameObjectsWithTag ("RemovableStairs");
+		foreach(GameObject stair in stairs)
+		{
+			Destroy(stair);
+		}
+	}
     
     IEnumerator Earthquake()
     {
-        playerLook = player.GetComponent<PlayerLook>();
+        PlayerLook playerLook = mainCamera.GetComponent<PlayerLook>();
         //playerMove = player.GetComponent<PlayerMove>();
         
-        playerLook.SetActive(false);
+		playerLook.enabled = false;
         //playerMove.SetActive(false);
         //Vector3 originPosition = mainCamera.transform.position;
+		float originalStrength = 0.007f;
         Quaternion originRotation = mainCamera.transform.rotation;
-        for (int i = 0; i < 5; i++)
+        for (int i = 30; i > 0; i--)
         {
-            mainCamera.transform.rotation = Quaternion(originRotation.x + Random.Range(-0.4,0.4)*0.2f, originRotation.y + Random.Range(-0.4,0.4)*0.2f, originRotation.z + Random.Range(-0.4,0.4)*0.2f, originRotation.w + Random.Range(-0.4,0.4)*0.2f);
-            yield return null;
+			float strength = originalStrength*i;
+			mainCamera.transform.rotation = new Quaternion(originRotation.x + Random.Range(-strength,strength), originRotation.y + Random.Range(-strength,strength), originRotation.z + Random.Range(-strength,strength), originRotation.w + Random.Range(-strength,strength));
+			//yield return new WaitForSeconds(0.1f);
+			yield return new WaitForSeconds(0.01f);
+			yield return null;
         }
         
         //mainCamera.transform.position = originPosition;
         mainCamera.transform.rotation = originRotation;
-        playerLook.SetActive(true);
+        playerLook.enabled = true;
+		CreateNewTrigger("communic_earthquake1");
         //playerMove.SetActive(true);
     }
     
     public void Challenge()
     {
-        if (Application.loadedLevelName == "cavernblabla1")
+		if (Application.loadedLevelName == "cavernScene" && taskManagement.progressionIndex > 0 && !movedstairs)
+		{
+			MoveStairs();
+			movedstairs = true;
+		}
+
+        if (Application.loadedLevelName == "cavernScene" && taskManagement.progressionIndex > 0 && !earthquaked)
         {
-            StartCoroutine("Earthquake");
-            CreateNewTrigger("communic_earthquake1");
+			AudioSource[] audios = player.GetComponents<AudioSource>();
+			audios[1].Play();
+			if (inventory.inventoryOpen)
+			{
+				inventory.ToolToggle();
+			}
+			StartCoroutine(Earthquake());
+			earthquaked = true;
         }
     }
     
     public void Assist()
     {
-        
-        if (taskManagement.progressionIndex == 1)
-        {
-            return;
-        }
+
         if (taskManagement.progressionIndex == 2)
         {
-            if (inventory.inventory["O"] < 4 && !inventory.inventoryOpen)
+            if (inventory.inventory["O"] < 4 && !inventory.inventoryOpen && navigationTips.Count > 1)
             {
-                int choice = Random.Range(0,navigationTips.Length);
-                CreateNewTrigger(navigationTips[choice]);
-                navigationTips.RemoveAt(choice);
-                return;
+				GiveHint(navigationTips);
+				return;
             }
             
-            GiveHints(acidTips);
+            GiveHint(acidTips);
+			return;
         }
+
         if (taskManagement.progressionIndex == 5)
         {
-            GiveHints(ethanolTips);
+            GiveHint(ethanolTips);
+			return;
         }
+
+		if (taskManagement.progressionIndex == 4)
+		{
+			if (!inventory.inventory.ContainsKey("F") || !inventory.inventory.ContainsKey("Cl"))
+			{
+				if (navigationTips.Count> 1)
+				{
+					navigationTips.RemoveAt(0);
+				}
+				GiveHint(navigationTips);
+				return;
+			}
+			GiveHint (heatTips);
+			return;
+		}
+
+		if (taskManagement.progressionIndex > 0)
+		{
+			GiveHint(generalTips);
+			return;
+		}
     }
     
     void GiveHint(List<string> someTips)
     {
-        if (someTips.Length == 0)
+        if (someTips.Count == 0)
             {
-                //gives answer
+                //gives answer?
                 return;
             }
             
             CreateNewTrigger(someTips[0]);
             someTips.RemoveAt(0);
-            return;
     }
-
 }

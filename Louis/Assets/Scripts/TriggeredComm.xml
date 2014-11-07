@@ -5,7 +5,8 @@
 <communic id="methanedone1">It does melt, great!</communic>
 <communic id="acid1">This seems to be a bunch of metal debris, maybe from a previous survey? You got an acid-resistant hose with your synthesis tool, sulfuric acid (H₂SO₄) could dissolve enough of it to let you pass</communic>
 <communic id="aciddone1">That did the trick, you'll be able to go through</communic>
-<communic id="heat1">The temperature is climbing here, you can't go forward. Given a better refrigerant, like CTFE (C₂F3Cl), your suit could deal with it</communic>
+<communic id="heat1">The temperature is climbing here, you can't go forward. Given a better refrigerant, like CTFE (C₂F₃Cl), your suit could deal with it</communic>
 <communic id="heatdone1">We're pretty lucky you found that chlorine! You must be near the surface now</communic>
 <communic id="ethanol1">Looks like your ethanol (C₂H₆O) fuel cell is empty, but I bet you can fill it up. Once you've done that, you'll be good to go! See you soon on the orbiter</communic>
+<communic id="earthquake1">I think this was a tremor, you'll have to be quick or you'll get stuck!</communic>
 <communic id="endcomm1">End</communic>
