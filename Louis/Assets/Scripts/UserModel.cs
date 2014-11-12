@@ -92,6 +92,21 @@ public class UserModel : MonoBehaviour {
 	{
 		return timeHistory.Last();
 	}
+	
+	public int GetInteractionData()
+	{
+		return adaptation.inventory.successStates;
+	}
+	
+	public double[] GetGazeData()
+	{
+		return gazeHistory.Last();
+	}
+	
+	public double[] GetEmotivData()
+	{
+		return emotionalHistory.Last ();
+	}
 
 	void TriggerAdaptation()
 	{

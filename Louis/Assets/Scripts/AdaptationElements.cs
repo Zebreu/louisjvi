@@ -7,7 +7,7 @@ public class AdaptationElements : MonoBehaviour {
     GameObject player;
     TaskManagement taskManagement;
     Camera mainCamera;
-    Inventory inventory;
+    public Inventory inventory;
     public Transform textTriggerPrefab;
     
 	List<string> generalTips = new List<string>{"gameinfo_lewisCenterTip1", "gameinfo_lewisValenceTip1"};

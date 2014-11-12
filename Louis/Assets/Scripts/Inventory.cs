@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour {
 	
 	private int inventoryGrid = -1;
 	
-	int successStates = 0;
+	public int successStates = 0;
 	string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis"};
 	
 	int pastIndex;
@@ -364,6 +364,7 @@ public class Inventory : MonoBehaviour {
 		if (Input.GetKeyDown ("z") && toolOpen)
 		{
 			UndoAction ();
+			successStates = 0;
 		}
 		
 		if (Input.GetButtonDown("Open Inventory"))

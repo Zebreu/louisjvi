@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Descent.cs" />
      <Compile Include="Assets\Scripts\AdaptationElements.cs" />
      <Compile Include="Assets\Scripts\BoxTextTrigger.cs" />
      <Compile Include="Assets\Scripts\Dissolving.cs" />
@@ -64,6 +65,7 @@
      <Compile Include="Assets\Scripts\PlayerLook.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
      <Compile Include="Assets\Scripts\RecordingData.cs" />
+     <Compile Include="Assets\Scripts\StartGame.cs" />
      <Compile Include="Assets\Scripts\TaskManagement.cs" />
      <Compile Include="Assets\Scripts\TextTriggering.cs" />
      <Compile Include="Assets\Scripts\UserModel.cs" />
