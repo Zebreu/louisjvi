@@ -5,11 +5,18 @@ using System;
 
 // Chlorotrifluoroethylene (CTFE) is a chlorofluorocarbon with chemical formula CF2CClF or C2F3Cl
 
+// How to add new molecules (in order): skeleton, bonds, list of molecules, list of names (repeated for versions of molecule), dictionary of bonds, list of bonds
+
 public class TaskManagement : MonoBehaviour {
+	//Add here
 	string[,] h2o = new string[,] {{"H"},{"O"},{"H"}};
 	List<int[]> h2obonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}};
 	Dictionary<string,List<int[]>> h2obonds = new Dictionary<string, List<int[]>>();
 	
+	string[,] h2o2 = new string[,] {{"H","O","H"}};
+	List<int[]> h2o2bonds1 = new List<int[]>{new int[4]{0,0,0,1}, new int[4]{0,1,0,2}};
+	Dictionary<string,List<int[]>> h2o2bonds = new Dictionary<string, List<int[]>>();
+		
 	string[,] ch4 = new string[,] {{"","H",""}, {"H","C","H"},{"","H",""}};
 	List<int[]> ch4bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,2,1}, new int[4]{1,1,1,2}, new int[4]{1,1,0,1}};
 	Dictionary<string,List<int[]>> ch4bonds = new Dictionary<string, List<int[]>>();
@@ -35,6 +42,17 @@ public class TaskManagement : MonoBehaviour {
 	Dictionary<string,List<int[]>> chloro2bonds = new Dictionary<string, List<int[]>>();
 	Dictionary<string,List<int[]>> chloro3bonds = new Dictionary<string, List<int[]>>();
 	Dictionary<string,List<int[]>> chloro4bonds = new Dictionary<string, List<int[]>>();
+	//Second orientation... assymetrical compounds require many versions
+	string[,] chloro10 = new string[,]{{"F","F"}, {"C","C"}, {"F","Cl"}};
+	string[,] chloro20 = new string[,]{{"F","F"}, {"C","C"}, {"Cl","F"}};
+	string[,] chloro30 = new string[,]{{"F","Cl"}, {"C","C"}, {"F","F"}};
+	string[,] chloro40 = new string[,]{{"Cl","F"}, {"C","C"}, {"F","F"}};
+	List<int[]> chloro10bonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}, new int[4]{0,1,1,1}, new int[4]{1,1,2,1}};
+	List<int[]> chloro10bonds2 = new List<int[]>{new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> chloro10bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> chloro20bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> chloro30bonds = new Dictionary<string, List<int[]>>();
+	Dictionary<string,List<int[]>> chloro40bonds = new Dictionary<string, List<int[]>>();
 	
 	string[,] ethanol = new string[,] {{"","H",""}, {"H","C","H"}, {"H","C","H"}, {"","O",""}, {"","H",""}};
 	List<int[]> ethanolbonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{2,1,3,1}, new int[4]{3,1,4,1}, new int[4]{1,1,1,0}, new int[4]{1,1,2,1}, new int[4]{2,1,2,0}, new int[4]{2,1,2,2}};
@@ -64,20 +82,30 @@ public class TaskManagement : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		//Add here
 		molecules.Add(h2o);
+		molecules.Add (h2o2);
 		molecules.Add(ch4);
 		molecules.Add (h2so4);
 		molecules.Add(chloro1);
 		molecules.Add(chloro2);
 		molecules.Add(chloro3);
 		molecules.Add(chloro4);
+		molecules.Add(chloro10);
+		molecules.Add(chloro20);
+		molecules.Add(chloro30);
+		molecules.Add(chloro40);
 		//molecules.Add (ccl2f2v1);
 		//molecules.Add (ccl2f2v2);
 		molecules.Add (ethanol);
-		//names = new string[]{"h2o","ch4","h2so4","ccl2f2","ccl2f2","ethanol"};
-		names = new string[]{"h2o","ch4","h2so4","chloro","chloro","chloro","chloro","ethanol"};
+		
+		names = new string[]{"h2o","h2o","ch4","h2so4","chloro","chloro","chloro","chloro","chloro","chloro","chloro","chloro","ethanol"}; //Add here
+		
+		//Add here
 		h2obonds.Add ("I",h2obonds1);
 		h2obonds.Add ("II", new List<int[]>());
+		h2o2bonds.Add ("I", h2o2bonds1);
+		h2o2bonds.Add ("II", new List<int[]>());
 		ch4bonds.Add ("I",ch4bonds1);
 		ch4bonds.Add ("II", new List<int[]>());
 		h2so4bonds.Add ("I", h2so4bonds1);
@@ -90,6 +118,15 @@ public class TaskManagement : MonoBehaviour {
 		chloro3bonds.Add("II",chlorobonds2);
 		chloro4bonds.Add("I",chlorobonds1);
 		chloro4bonds.Add("II",chlorobonds2);
+		
+		chloro10bonds.Add("I",chloro10bonds1);
+		chloro10bonds.Add("II",chloro10bonds2);
+		chloro20bonds.Add("I",chloro10bonds1);
+		chloro20bonds.Add("II",chloro10bonds2);
+		chloro30bonds.Add("I",chloro10bonds1);
+		chloro30bonds.Add("II",chloro10bonds2);
+		chloro40bonds.Add("I",chloro10bonds1);
+		chloro40bonds.Add("II",chloro10bonds2);
 		//ccl2f2v1bonds.Add ("I",ccl2f2bonds1);
 		//ccl2f2v1bonds.Add ("II", new List<int[]>());
 		//ccl2f2v2bonds.Add ("I",ccl2f2bonds1);
@@ -97,8 +134,8 @@ public class TaskManagement : MonoBehaviour {
 		ethanolbonds.Add ("I",ethanolbonds1);
 		ethanolbonds.Add ("II", new List<int[]>());
 																						
-		//allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,ccl2f2v1bonds,ccl2f2v2bonds,ethanolbonds};
-		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,ethanolbonds};
+		//Add here
+		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,h2o2bonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,chloro10bonds,chloro20bonds,chloro30bonds,chloro40bonds,ethanolbonds};
 		
 		progressionIndex = 0;
 		//progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};
@@ -217,7 +254,7 @@ public class TaskManagement : MonoBehaviour {
 	{
 		int enumerating = 0;
 		foreach (string[,] molecule in molecules)
-		{
+		{		
 			int toolx = tool.GetLength(0);
 			int tooly = tool.GetLength (1);
 			
@@ -303,7 +340,7 @@ public class TaskManagement : MonoBehaviour {
 		
 		List<int[]> playerBonds1 = bondsLogic["I"];
 		List<int[]> playerBonds2 = bondsLogic["II"];
-		
+				
 		if (playerBonds1.Count != goodBonds1.Count || playerBonds2.Count != goodBonds2.Count)
 		{
 			return false;
