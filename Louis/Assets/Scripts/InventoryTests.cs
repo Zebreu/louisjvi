@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-public class Inventory : MonoBehaviour {
-	TaskManagement taskManagement;
+public class InventoryTests : MonoBehaviour {
+	string logfile = @"C:\Users\locarno\Desktop\DataLog\Louis-JVI-pretest.txt";
+
+	TaskManagementTests taskManagement;
 	bool toolOpen = false;
 	public bool inventoryOpen = false;
 	bool tableOpen = false;
@@ -28,7 +30,8 @@ public class Inventory : MonoBehaviour {
 	private int inventoryGrid = -1;
 	
 	public int successStates = 0;
-	string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis"};
+	//string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis"};
+	string[] successMessages = new string[]{"CO2", "CCl2F2", "C2H4"};
 	
 	int pastIndex;
 	List<Dictionary<string, int>> pastInventories;
@@ -70,25 +73,31 @@ public class Inventory : MonoBehaviour {
 	
 	void Start () {
 		mainCamera = Camera.main;
-	
+		
 		Screen.lockCursor = true;
-		GameObject tasks = GameObject.Find ("Tasks");
-		taskManagement = tasks.GetComponent<TaskManagement>();
+		GameObject tasks = GameObject.Find ("TasksTests");
+		taskManagement = tasks.GetComponent<TaskManagementTests>();
 		inventory.Add("I",1);
 		inventory.Add("II",1);
+		
+		inventory.Add ("H", 10);
+		inventory.Add ("C", 10);
+		inventory.Add ("O", 10);
+		inventory.Add ("B", 10);
+		inventory.Add ("N", 10);
+		inventory.Add ("F", 10);
+		inventory.Add ("Cl", 10);
 		
 		bonds = new Dictionary<Rect, Texture2D>();
 		bondsLogic = new Dictionary<string, List<int[]>>();
 		bondsLogic.Add ("I",new List<int[]>());
 		bondsLogic.Add ("II",new List<int[]>());		
-	
-		DontDestroyOnLoad(transform.gameObject);
 		
 		usedCompound = "";
 		
-		journalShown = false;
+		journalShown = true;
 		journalStyle = new GUIStyle ();
-		journalStyle.fontSize = 22;
+		journalStyle.fontSize = 16;
 		journalStyle.wordWrap = true;
 		journalStyle.normal.textColor = Color.white;
 	}
@@ -114,11 +123,11 @@ public class Inventory : MonoBehaviour {
 		offsetX = (Screen.width-totalwidth)/2;
 		offsetY = (Screen.height-totalheight)/2;
 	}
-		
+	
 	void InventoryFill(string name)
-	/// <summary>
-	/// Adds the chemical element to the inventory depending on the selected object 
-	/// </summary>
+		/// <summary>
+		/// Adds the chemical element to the inventory depending on the selected object 
+		/// </summary>
 	{
 		string symbol = "";
 		int number = 0;
@@ -205,11 +214,11 @@ public class Inventory : MonoBehaviour {
 		
 		Debug.Log (inventory[symbol]+" "+symbol);
 	}
-
+	
 	void Selection()
-	/// <summary>
-	/// Finds the object under the cursor (at the center of the screen)
-	/// </summary>
+		/// <summary>
+		/// Finds the object under the cursor (at the center of the screen)
+		/// </summary>
 	{
 		if (Screen.lockCursor) 
 		{
@@ -234,7 +243,7 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	void TableToggle()
 	{
 		if (!tableOpen)
@@ -245,7 +254,7 @@ public class Inventory : MonoBehaviour {
 			tableOpen = false;
 		}
 	}
-
+	
 	void InventoryToggle()
 	{
 		if (!inventoryOpen)
@@ -264,7 +273,7 @@ public class Inventory : MonoBehaviour {
 			}
 		}	
 	}
-
+	
 	public void ToolToggle()
 	{
 		if (!toolOpen)
@@ -341,7 +350,7 @@ public class Inventory : MonoBehaviour {
 		if (pastIndex >= 0)
 		{
 			Array.Copy (pastTool[pastIndex],toolContents, pastTool[pastIndex].Length);
-
+			
 			inventory = new Dictionary<string, int>(pastInventories[pastIndex]);
 			bondsLogic = new Dictionary<string, List<int[]>>(pastBonds[pastIndex]);
 			bondsLogic["I"] = new List<int[]>(pastBonds[pastIndex]["I"]);
@@ -354,7 +363,7 @@ public class Inventory : MonoBehaviour {
 			pastInventories.RemoveAt(pastIndex+1);
 			pastBonds.RemoveAt(pastIndex+1);
 			pastVisibleBonds.RemoveAt(pastIndex+1);
-	
+			
 		}
 	}
 	
@@ -364,7 +373,6 @@ public class Inventory : MonoBehaviour {
 		if (Input.GetKeyDown ("z") && toolOpen)
 		{
 			UndoAction ();
-			successStates = 0;
 		}
 		
 		if (Input.GetButtonDown("Open Inventory"))
@@ -375,11 +383,35 @@ public class Inventory : MonoBehaviour {
 		if (Input.GetButtonDown ("Open Tool"))
 		{
 			ToolToggle ();
-			successStates = 0;
+			
 		}
 		if (Input.GetButtonDown ("Combine") && toolOpen)
 		{
 			string compound = taskManagement.Combine (toolContents, bondsLogic);
+			if (false)
+			{
+				if (compound.Equals(successMessages[successStates]))
+				{
+					System.IO.File.AppendAllText(logfile, System.String.Format("{0} {1}", 1, System.Environment.NewLine));
+				} else
+				{
+					System.IO.File.AppendAllText(logfile, System.String.Format("{0} {1}", 0, System.Environment.NewLine));
+				}
+			}
+			
+			ToolToggle ();
+			ToolToggle ();
+			
+			if (successStates == 2)
+			{
+				Application.LoadLevel("introScene");
+			} 
+			else 
+			{
+				successStates += 1;
+			}
+			
+			/*
 			if (compound == "None")
 			{
 				Debug.Log("Not available");
@@ -392,6 +424,7 @@ public class Inventory : MonoBehaviour {
 				ToolToggle ();
 				ToolToggle ();
 			}
+			*/
 		}
 		if (Input.GetButtonDown ("Show Journal"))
 		{
@@ -417,7 +450,7 @@ public class Inventory : MonoBehaviour {
 		}
 		
 		GUILayout.BeginArea (new Rect(0.0f,Screen.height/1.4f,Screen.width,250.0f));
-				
+		
 		GUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
 		inventoryGrid = GUILayout.SelectionGrid(inventoryGrid, inventoryArray, 5);//inventory.Keys.Count);
@@ -431,6 +464,7 @@ public class Inventory : MonoBehaviour {
 			string symbol = items[items.Length-1];
 			if (inventory[symbol] > 0)
 			{
+				/*
 				if (taskManagement.Progress(symbol) == "Done")
 				{
 					usedCompound = symbol;
@@ -441,12 +475,13 @@ public class Inventory : MonoBehaviour {
 						ToolToggle();
 					}
 				}
+				*/
 			}
 		}
 	}
 	
 	void addBond(Rect bondPosition, string direction, string symbol, int[] bondPair)
-	// Creates a bond both for display and logic purposes
+		// Creates a bond both for display and logic purposes
 	{
 		int[] bondPairOpposite = new int[4];
 		bondPairOpposite[0] = bondPair[2];
@@ -498,7 +533,7 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void checkBond(Rect position, int[] bondPair, string symbol)
-	// Checks the direction in which the bond is created and its position
+		// Checks the direction in which the bond is created and its position
 	{		
 		if (bondPair[0] < bondPair[2]) // Left 
 		{
@@ -536,7 +571,7 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	void keepHistory()
-	// Keeps a snapshot of the Chemical Synthesis Tool in order to allow undo operations
+		// Keeps a snapshot of the Chemical Synthesis Tool in order to allow undo operations
 	{
 		pastIndex += 1;
 		Debug.Log(pastIndex);
@@ -567,7 +602,7 @@ public class Inventory : MonoBehaviour {
 	void displayTool()
 	{	
 		GUI.skin.box.fontSize = 30;
-			
+		
 		// Config #1
 		GUI.DrawTexture(new Rect(-Screen.width*0.058f,Screen.height*0.058f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
 		GUI.Label(new Rect(Screen.width*0.365f, Screen.height*0.18f, 450f, 66f), successMessages[successStates],"box");
@@ -637,10 +672,10 @@ public class Inventory : MonoBehaviour {
 	}
 	
 	//
-
+	
 	void OnGUI()
 	{		
-	
+		
 		GUI.skin.box.fontSize = 50;
 		GUI.skin.box.alignment = TextAnchor.MiddleCenter;
 		GUI.skin.box.wordWrap = false;

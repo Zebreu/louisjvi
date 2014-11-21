@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\EvaluationTextfield.cs" />
      <Compile Include="Assets\Scripts\EyeTrackingClass.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
+     <Compile Include="Assets\Scripts\InventoryTests.cs" />
      <Compile Include="Assets\Scripts\Launch.cs" />
      <Compile Include="Assets\Scripts\LevelGenerator.cs" />
      <Compile Include="Assets\Scripts\LevelLoading.cs" />
@@ -67,6 +68,8 @@
      <Compile Include="Assets\Scripts\RecordingData.cs" />
      <Compile Include="Assets\Scripts\StartGame.cs" />
      <Compile Include="Assets\Scripts\TaskManagement.cs" />
+     <Compile Include="Assets\Scripts\TaskManagementTests.cs" />
+     <Compile Include="Assets\Scripts\TextManagerTests.cs" />
      <Compile Include="Assets\Scripts\TextTriggering.cs" />
      <Compile Include="Assets\Scripts\UserModel.cs" />
      <None Include="Assets\Scripts\TriggeredGameInfo.xml" />
