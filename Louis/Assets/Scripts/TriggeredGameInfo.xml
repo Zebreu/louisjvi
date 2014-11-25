@@ -12,6 +12,7 @@
 <gameinfo id="methane3">When crafting a compound, each single bond you add represents 2 electrons, shared between two atoms. If an atom doesn't have 8 atoms after you sum up its lone electrons and those shared through bonds, you might have to add double bonds or to redraw the structure</gameinfo>
 <gameinfo id="acid1">It's often important to consider formal charges when drawing structures. You can calculate each atom's formal charge by substracting each bond (1 for a single, 2 for a double one) and each lone electron from its initial number of valence electrons</gameinfo>
 <gameinfo id="acid2">If the formal charge is not zero, you might be able to reconfigure the diagram (change the shape or the type of bonds). The octet rule can be violated in some cases</gameinfo>
+<gameinfo id="acid3">Also, keep in mind that elements in the third row of the Periodic Table can sometimes hold more than 8 electrons</gameinfo>
 <gameinfo id="lewisCenterTip1">To start a Lewis diagram, you could have to determine the atoms that go in the center of the structure, and this atom has to bond with many other atoms. It's a good idea to choose the least electronegative atom</gameinfo>
 <gameinfo id="lewisCenterTip2">Open your Periodic Table by pressing I. Generally, it should be the atom that's farthest from Fluorine (F)</gameinfo>
 <gameinfo id="lewisValenceTip1">Often, you can simply add the number of single bonds (and twice the number of double bonds) to the initial number of valence electrons to determine if the octet is full</gameinfo>
@@ -23,7 +24,7 @@
 <gameinfo id="lewisEthanolTip1">It's good to know that another common way to write out ethanol's formula is CH₃CH₂OH</gameinfo>
 <gameinfo id="navigationTip1">If you're missing something to synthetize a compound, it might be good to go back and look again for a place you didn't notice</gameinfo>
 <gameinfo id="navigationTipQuantity1">If you don't have a large enough quantity of a given element, try to search the location where you initially found the element</gameinfo>
-<gameinfo id="pre1">Press O to display your Chemical Synthesis Tool</gameinfo>
+<gameinfo id="pre1">Press O to display your Chemical Synthesis Tool (press Enter or Return to read the next text box)</gameinfo>
 <gameinfo id="pre2">You can select an element (H, O, C, etc.) from the array below by clicking on it, and place it in the tool by clicking on a cell. Press Z to undo an action</gameinfo>
 <gameinfo id="pre3">The two first symbols are single and double covalent bonds (you can use as many as you need). To position them, first click on a cell (which hopefully contains an element already) and then on an adjacent cell (no diagonals though)</gameinfo>
 <gameinfo id="pre4">Draw the Lewis diagram of the compound displayed at the top of the tool (the first one should be CO2). When you're ready, press P to synthesize it. After 3 compounds, the game will start</gameinfo>

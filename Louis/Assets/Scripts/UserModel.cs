@@ -12,6 +12,7 @@ public class UserModel : MonoBehaviour {
 
 	List<double[]> emotionalHistory = new List<double[]>();
 	List<double[]> gazeHistory = new List<double[]>();
+	List<string> currentTimeHistory = new List<string> ();
 	List<float> timeHistory = new List<float>(); 
 	List<float> progressionHistory = new List<float>();
 	int currentProgress;
@@ -30,10 +31,12 @@ public class UserModel : MonoBehaviour {
 	double windowMotivation = 0.0;
 	double windowFrustration = 0.0;
 
-	public bool adapting = false;
+	bool adapting;
 	
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
+
+		adapting = false;
 		
 		eyetracking = GameObject.Find ("EyeTracking").GetComponent<EyeTrackingClass>();
 		emotiv = GameObject.Find ("EEGTracking").GetComponent<EmotivTracking>();
@@ -41,6 +44,7 @@ public class UserModel : MonoBehaviour {
 		adaptation = GameObject.Find ("Adaptation").GetComponent<AdaptationElements>();
 
 		timeHistory.Add(Time.time);
+		currentTimeHistory.Add (System.DateTime.Now.ToString ("HH:mm:ss.fff"));
 		emotionalHistory.Add(emotiv.getAffectivData());
 		gazeHistory.Add(eyetracking.getGazeData());
 		progressionHistory.Add (timeHistory.Last());
@@ -55,7 +59,8 @@ public class UserModel : MonoBehaviour {
 	}
 	
 	void Update () {
-		timeHistory.Add(Time.time);
+		timeHistory.Add (Time.time);
+		currentTimeHistory.Add (System.DateTime.Now.ToString ("HH:mm:ss.fff"));
 		emotionalHistory.Add(emotiv.getAffectivData());
 		gazeHistory.Add(eyetracking.getGazeData());
 
@@ -91,6 +96,11 @@ public class UserModel : MonoBehaviour {
 	public float GetTime()
 	{
 		return timeHistory.Last();
+	}
+
+	public string GetCurrentTime()
+	{
+		return currentTimeHistory.Last();
 	}
 	
 	public int GetInteractionData()

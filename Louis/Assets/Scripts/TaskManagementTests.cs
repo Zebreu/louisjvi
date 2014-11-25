@@ -77,6 +77,58 @@ public class TaskManagementTests : MonoBehaviour {
 	List<int[]> c2h42bonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}, new int[4]{0,1,1,1}, new int[4]{1,1,2,1}};
 	List<int[]> c2h42bonds2 = new List<int[]>{new int[4]{1,0,1,1}};
 	Dictionary<string,List<int[]>> c2h42bonds = new Dictionary<string, List<int[]>>();
+
+	string[,] nh31 = new string[,]{{"H",""},{"N","H"},{"H",""}};
+	List<int[]> nh31bonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}, new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> nh31bonds = new Dictionary<string, List<int[]>>();
+
+	string[,] nh32 = new string[,]{{"","H"},{"H","N"},{"","H"}};
+	List<int[]> nh32bonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> nh32bonds = new Dictionary<string, List<int[]>>();
+
+	string[,] nh33 = new string[,]{{"H","N","H"},{"","H",""}};
+	List<int[]> nh33bonds1 = new List<int[]>{new int[4]{0,0,0,1}, new int[4]{0,1,0,2}, new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> nh33bonds = new Dictionary<string, List<int[]>>();
+
+	string[,] nh34 = new string[,]{{"","H",""},{"H","N","H"}};
+	List<int[]> nh34bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,1,2}, new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> nh34bonds = new Dictionary<string, List<int[]>>();
+
+	string[,] bf31 = new string[,]{{"F",""},{"B","F"},{"F",""}};
+	List<int[]> bf31bonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}, new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> bf31bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] bf32 = new string[,]{{"","F"},{"F","B"},{"","F"}};
+	List<int[]> bf32bonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> bf32bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] bf33 = new string[,]{{"F","B","F"},{"","F",""}};
+	List<int[]> bf33bonds1 = new List<int[]>{new int[4]{0,0,0,1}, new int[4]{0,1,0,2}, new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> bf33bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] bf34 = new string[,]{{"","F",""},{"F","B","F"}};
+	List<int[]> bf34bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,1,2}, new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> bf34bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] ch2o1 = new string[,]{{"H",""},{"C","O"},{"H",""}};
+	List<int[]> ch2o1bonds1 = new List<int[]>{new int[4]{0,0,1,0}, new int[4]{1,0,2,0}};
+	List<int[]> ch2o1bonds2 = new List<int[]>{new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> ch2o1bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] ch2o2 = new string[,]{{"","H"},{"O","C"},{"","H"}};
+	List<int[]> ch2o2bonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}};
+	List<int[]> ch2o2bonds2 = new List<int[]>{new int[4]{1,0,1,1}};
+	Dictionary<string,List<int[]>> ch2o2bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] ch2o3 = new string[,]{{"H","C","H"},{"","O",""}};
+	List<int[]> ch2o3bonds1 = new List<int[]>{new int[4]{0,0,0,1}, new int[4]{0,1,0,2}};
+	List<int[]> ch2o3bonds2 = new List<int[]>{new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> ch2o3bonds = new Dictionary<string, List<int[]>>();
+	
+	string[,] ch2o4 = new string[,]{{"","O",""},{"H","C","H"}};
+	List<int[]> ch2o4bonds1 = new List<int[]>{new int[4]{1,0,1,1}, new int[4]{1,1,1,2}};
+	List<int[]> ch2o4bonds2 = new List<int[]>{new int[4]{0,1,1,1}};
+	Dictionary<string,List<int[]>> ch2o4bonds = new Dictionary<string, List<int[]>>();
 	
 	Dictionary<string,List<int[]>>[] allbonds;
 	string[] names;
@@ -115,9 +167,25 @@ public class TaskManagementTests : MonoBehaviour {
 		
 		molecules.Add (c2h4);
 		molecules.Add (c2h42);
-		
+
+		molecules.Add (nh31);
+		molecules.Add (nh32);
+		molecules.Add (nh33);
+		molecules.Add (nh34);
+
+		molecules.Add (bf31);
+		molecules.Add (bf32);
+		molecules.Add (bf33);
+		molecules.Add (bf34);
+
+		molecules.Add (ch2o1);
+		molecules.Add (ch2o2);
+		molecules.Add (ch2o3);
+		molecules.Add (ch2o4);
+
+
 		//Add here
-		names = new string[]{"h2o","h2o","ch4","h2so4","chloro","chloro","chloro","chloro","chloro","chloro","chloro","chloro","ethanol","CO2","CO2","CCl2F2","CCl2F2","C2H4","C2H4"};
+		names = new string[]{"h2o","h2o","ch4","h2so4","chloro","chloro","chloro","chloro","chloro","chloro","chloro","chloro","ethanol","CO2","CO2","CCl2F2","CCl2F2","C2H4","C2H4","NH3","NH3","NH3","NH3","BF3","BF3","BF3","BF3","CH2O","CH2O","CH2O","CH2O"};
 		
 		//Add here
 		h2obonds.Add ("I",h2obonds1);
@@ -162,9 +230,37 @@ public class TaskManagementTests : MonoBehaviour {
 		c2h4bonds.Add ("II",c2h4bonds2);
 		c2h42bonds.Add ("I",c2h42bonds1);
 		c2h42bonds.Add ("II",c2h42bonds2);
-		
+
+		nh31bonds.Add ("I", nh31bonds1);
+		nh31bonds.Add ("II", new List<int[]>());
+		nh32bonds.Add ("I", nh32bonds1);
+		nh32bonds.Add ("II", new List<int[]>());
+		nh33bonds.Add ("I", nh33bonds1);
+		nh33bonds.Add ("II", new List<int[]>());
+		nh34bonds.Add ("I", nh34bonds1);
+		nh34bonds.Add ("II", new List<int[]>());
+
+		bf31bonds.Add ("I", bf31bonds1);
+		bf31bonds.Add ("II", new List<int[]>());
+		bf32bonds.Add ("I", bf32bonds1);
+		bf32bonds.Add ("II", new List<int[]>());
+		bf33bonds.Add ("I", bf33bonds1);
+		bf33bonds.Add ("II", new List<int[]>());
+		bf34bonds.Add ("I", bf34bonds1);
+		bf34bonds.Add ("II", new List<int[]>());
+
+		ch2o1bonds.Add ("I", ch2o1bonds1);
+		ch2o1bonds.Add ("II", ch2o1bonds2);
+		ch2o2bonds.Add ("I", ch2o2bonds1);
+		ch2o2bonds.Add ("II", ch2o2bonds2);
+		ch2o3bonds.Add ("I", ch2o3bonds1);
+		ch2o3bonds.Add ("II", ch2o3bonds2);
+		ch2o4bonds.Add ("I", ch2o4bonds1);
+		ch2o4bonds.Add ("II", ch2o4bonds2);
+
+
 		//Add here
-		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,h2o2bonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,chloro10bonds,chloro20bonds,chloro30bonds,chloro40bonds,ethanolbonds,co2bonds,co22bonds,ccl2f2v1bonds,ccl2f2v2bonds,c2h4bonds,c2h42bonds};
+		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,h2o2bonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,chloro10bonds,chloro20bonds,chloro30bonds,chloro40bonds,ethanolbonds,co2bonds,co22bonds,ccl2f2v1bonds,ccl2f2v2bonds,c2h4bonds,c2h42bonds,nh31bonds,nh32bonds,nh33bonds,nh34bonds,bf31bonds,bf32bonds,bf33bonds,bf34bonds,ch2o1bonds,ch2o2bonds,ch2o3bonds,ch2o4bonds};
 		
 		progressionIndex = 0;
 		//progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};

@@ -592,7 +592,7 @@ public class Inventory : MonoBehaviour {
 				{
 					if (inventoryGrid != -1)
 					{
-						
+						successStates = 0;
 						string[] items = inventoryArray[inventoryGrid].Split ();
 						string symbol = items[items.Length-1];
 						if (symbol.Length > 2){

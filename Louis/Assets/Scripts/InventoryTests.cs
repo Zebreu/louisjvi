@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 
 public class InventoryTests : MonoBehaviour {
-	string logfile = @"C:\Users\locarno\Desktop\DataLog\Louis-JVI-pretest.txt";
+	string logfile = @"Log\Louis-JVI-pretest.txt";
 
 	TaskManagementTests taskManagement;
 	bool toolOpen = false;
@@ -100,6 +100,15 @@ public class InventoryTests : MonoBehaviour {
 		journalStyle.fontSize = 16;
 		journalStyle.wordWrap = true;
 		journalStyle.normal.textColor = Color.white;
+
+		if(Application.loadedLevelName.Equals("postScene"))
+		{
+			ToolToggle ();
+			successMessages[0] = "NH3";
+			successMessages[1] = "CH2O";
+			successMessages[2] = "BF3";
+			logfile = @"Log\Louis-JVI-posttest.txt";
+		}
 	}
 	
 	void OnLevelWasLoaded()
@@ -388,14 +397,14 @@ public class InventoryTests : MonoBehaviour {
 		if (Input.GetButtonDown ("Combine") && toolOpen)
 		{
 			string compound = taskManagement.Combine (toolContents, bondsLogic);
-			if (false)
+			if (true)
 			{
 				if (compound.Equals(successMessages[successStates]))
 				{
-					System.IO.File.AppendAllText(logfile, System.String.Format("{0} {1}", 1, System.Environment.NewLine));
+					System.IO.File.AppendAllText(logfile, System.String.Format("{0} {1} {2}", 1, successMessages[successStates], System.Environment.NewLine));
 				} else
 				{
-					System.IO.File.AppendAllText(logfile, System.String.Format("{0} {1}", 0, System.Environment.NewLine));
+					System.IO.File.AppendAllText(logfile, System.String.Format("{0} {1} {2}", 0, successMessages[successStates], System.Environment.NewLine));
 				}
 			}
 			
@@ -403,8 +412,15 @@ public class InventoryTests : MonoBehaviour {
 			ToolToggle ();
 			
 			if (successStates == 2)
-			{
-				Application.LoadLevel("introScene");
+			{	
+				if (Application.loadedLevelName.Equals ("preScene"))
+				{
+					Application.LoadLevel("introScene");
+				}
+				else
+				{
+					successMessages[2] = "You're done!";
+				}
 			} 
 			else 
 			{

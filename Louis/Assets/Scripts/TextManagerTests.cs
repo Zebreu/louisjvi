@@ -24,8 +24,8 @@ public class TextManagerTests : MonoBehaviour {
 	void Start()
 		// Reads in the files storing the text for the game hints and character communications
 	{
-		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\n"}, System.StringSplitOptions.None);
-		comms = File.ReadAllText (comm_filename).Split (new string[] {"</communic>\n"}, System.StringSplitOptions.None);
+		gameinfos = File.ReadAllText (gameinfo_filename).Split (new string[] {"</gameinfo>\r\n"}, System.StringSplitOptions.None);
+		comms = File.ReadAllText (comm_filename).Split (new string[] {"</communic>\r\n"}, System.StringSplitOptions.None);
 		inventoryJournal = GameObject.Find ("InventoryTests").GetComponent<InventoryTests>();
 		
 		GetTrigger ("gameinfo_pre1");
