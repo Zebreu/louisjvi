@@ -210,7 +210,7 @@ public class EmotivTracking : MonoBehaviour {
 	void Start () {
 		
 		DontDestroyOnLoad(transform.gameObject);
-	
+		tracking = true;
 		if (tracking)
 		{
 			engine = EmoEngine.Instance;
