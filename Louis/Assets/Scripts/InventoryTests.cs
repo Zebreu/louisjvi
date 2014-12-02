@@ -661,16 +661,26 @@ public class InventoryTests : MonoBehaviour {
 								{
 									bondPair[2] = i;
 									bondPair[3] = j;
-									checkBond (position,bondPair,symbol);
 									
-									bondsLogic[symbol].Add (bondPair);
+									if (!(bondPair[0] == bondPair[2] && bondPair[1] == bondPair[3]) && ((Math.Pow(bondPair[0]-bondPair[2],2)+Math.Pow (bondPair[1]-bondPair[3],2)) < 2))
+									{
+										checkBond (position,bondPair,symbol);
+										
+										bondsLogic[symbol].Add (bondPair);
+										
+										keepHistory();
+										
+										printBonds();
+										
+										bondPair = new int[4];
+										newBond = true;
+									}
+									else
+									{
+										bondPair = new int[4];
+										newBond = true;
+									}
 									
-									keepHistory();
-									
-									printBonds();
-									
-									bondPair = new int[4];
-									newBond = true;
 								} else {
 									bondPair[0] = i;
 									bondPair[1] = j;
