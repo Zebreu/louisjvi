@@ -58,6 +58,10 @@ public class TaskManagement : MonoBehaviour {
 	List<int[]> ethanolbonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{2,1,3,1}, new int[4]{3,1,4,1}, new int[4]{1,1,1,0}, new int[4]{1,1,2,1}, new int[4]{2,1,2,0}, new int[4]{2,1,2,2}};
 	Dictionary<string,List<int[]>> ethanolbonds = new Dictionary<string, List<int[]>>();
 	
+	string[,] ethanol2 = new string[,] {{"","H",""}, {"","O",""}, {"H","C","H"}, {"H","C","H"}, {"","H",""}};
+	List<int[]> ethanol2bonds1 = new List<int[]>{new int[4]{0,1,1,1}, new int[4]{1,1,2,1}, new int[4]{2,1,3,1}, new int[4]{3,1,4,1}, new int[4]{2,1,2,0}, new int[4]{2,1,2,2}, new int[4]{3,1,3,0}, new int[4]{3,1,3,2}};
+	Dictionary<string,List<int[]>> ethanol2bonds = new Dictionary<string, List<int[]>>();
+	
 	Dictionary<string,List<int[]>>[] allbonds;
 	string[] names;
 	List<string[,]> molecules = new List<string[,]>();
@@ -98,8 +102,8 @@ public class TaskManagement : MonoBehaviour {
 		//molecules.Add (ccl2f2v1);
 		//molecules.Add (ccl2f2v2);
 		molecules.Add (ethanol);
-		
-		names = new string[]{"h2o","h2o","ch4","h2so4","chloro","chloro","chloro","chloro","chloro","chloro","chloro","chloro","ethanol"}; //Add here
+		molecules.Add (ethanol2);
+		names = new string[]{"h2o","h2o","ch4","h2so4","chloro","chloro","chloro","chloro","chloro","chloro","chloro","chloro","ethanol","ethanol"}; //Add here
 		
 		//Add here
 		h2obonds.Add ("I",h2obonds1);
@@ -133,9 +137,11 @@ public class TaskManagement : MonoBehaviour {
 		//ccl2f2v2bonds.Add ("II", new List<int[]>());
 		ethanolbonds.Add ("I",ethanolbonds1);
 		ethanolbonds.Add ("II", new List<int[]>());
+		ethanol2bonds.Add ("I",ethanol2bonds1);
+		ethanol2bonds.Add ("II", new List<int[]>());
 																						
 		//Add here
-		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,h2o2bonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,chloro10bonds,chloro20bonds,chloro30bonds,chloro40bonds,ethanolbonds};
+		allbonds = new Dictionary<string, List<int[]>>[]{h2obonds,h2o2bonds,ch4bonds,h2so4bonds,chloro1bonds,chloro2bonds,chloro3bonds,chloro4bonds,chloro10bonds,chloro20bonds,chloro30bonds,chloro40bonds,ethanolbonds,ethanol2bonds};
 		
 		progressionIndex = 0;
 		//progression = new string[]{"H"+c2+"O","CH"+c4,"H"+c2+"SO"+c4,"CH"+c4,"CCl"+c2+"F"+c2,"CH"+c3+"CH"+c2+"OH"};
