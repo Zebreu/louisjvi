@@ -1,0 +1,6 @@
+0 CO2 
+0 CCl2F2 
+0 C2H4 
+0 CO2 
+0 CCl2F2 
+0 C2H4 
