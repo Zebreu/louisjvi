@@ -32,13 +32,17 @@ public class UserModel : MonoBehaviour {
 	double windowFrustration = 0.0;
 
 	bool adapting;
+	bool eyetrackingEnabled;
 	
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
-
+		eyetrackingEnabled = false;
 		adapting = false;
 		
-		eyetracking = GameObject.Find ("EyeTracking").GetComponent<EyeTrackingClass>();
+		if (eyetrackingEnabled) // Eyetracking disabled
+		{
+			eyetracking = GameObject.Find ("EyeTracking").GetComponent<EyeTrackingClass>();
+		}
 		emotiv = GameObject.Find ("EEGTracking").GetComponent<EmotivTracking>();
 		taskManagement = GameObject.Find ("Tasks").GetComponent<TaskManagement>();
 		adaptation = GameObject.Find ("Adaptation").GetComponent<AdaptationElements>();
@@ -46,7 +50,10 @@ public class UserModel : MonoBehaviour {
 		timeHistory.Add(Time.time);
 		currentTimeHistory.Add (System.DateTime.Now.ToString ("HH:mm:ss.fff"));
 		emotionalHistory.Add(emotiv.getAffectivData());
-		gazeHistory.Add(eyetracking.getGazeData());
+		if (eyetrackingEnabled) // Eyetracking disabled
+		{
+			gazeHistory.Add(eyetracking.getGazeData());
+		}
 		progressionHistory.Add (timeHistory.Last());
 		currentProgress = 0;
 
@@ -62,8 +69,10 @@ public class UserModel : MonoBehaviour {
 		timeHistory.Add (Time.time);
 		currentTimeHistory.Add (System.DateTime.Now.ToString ("HH:mm:ss.fff"));
 		emotionalHistory.Add(emotiv.getAffectivData());
-		gazeHistory.Add(eyetracking.getGazeData());
-
+		if (eyetrackingEnabled) // Eyetracking disabled
+		{
+			gazeHistory.Add(eyetracking.getGazeData());
+		}
 
 		
 		// Marks the timeline with progress events

@@ -65,6 +65,7 @@
      <Compile Include="Assets\Scripts\MeltWall.cs" />
      <Compile Include="Assets\Scripts\PlayerLook.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
+     <Compile Include="Assets\Scripts\ReadDecision.cs" />
      <Compile Include="Assets\Scripts\RecordingData.cs" />
      <Compile Include="Assets\Scripts\StartGame.cs" />
      <Compile Include="Assets\Scripts\TaskManagement.cs" />

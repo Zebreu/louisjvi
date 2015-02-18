@@ -1,0 +1,6 @@
+Nothing,4.950284
+Nothing,14.97328
+Nothing,24.98649
+Nothing,34.9875
+Nothing,45.00158
+Nothing,50.62924

@@ -12,11 +12,13 @@ public class RecordingData : MonoBehaviour {
 	
 	UserModel user;
 	bool logging; 
+	bool eyetrackingEnabled;
 
 	// Use this for initialization
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
 		logging = true;
+		eyetrackingEnabled = false;
 		gameObject.SetActive(logging);
 		if (logging)
 		{
@@ -29,7 +31,13 @@ public class RecordingData : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		double[] gazeData = user.GetGazeData();
+		double[] gazeData;
+		if (eyetrackingEnabled) // Eyetracking disabled
+		{
+			gazeData = user.GetGazeData();
+		} else {
+			gazeData = new double[]{0.0,0.0,0.0,0.0,0.0,0.0};
+		}
 		double[] emotivData = user.GetEmotivData();
 		float time = user.GetTime();
 		string currentTime = user.GetCurrentTime ();
