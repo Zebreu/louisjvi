@@ -9,7 +9,7 @@ public class UserModel : MonoBehaviour {
 	EmotivTracking emotiv;
 	TaskManagement taskManagement;
 	AdaptationElements adaptation;
-
+	ReadDecision classification;
 	List<double[]> emotionalHistory = new List<double[]>();
 	List<double[]> gazeHistory = new List<double[]>();
 	List<string> currentTimeHistory = new List<string> ();
@@ -46,7 +46,8 @@ public class UserModel : MonoBehaviour {
 		emotiv = GameObject.Find ("EEGTracking").GetComponent<EmotivTracking>();
 		taskManagement = GameObject.Find ("Tasks").GetComponent<TaskManagement>();
 		adaptation = GameObject.Find ("Adaptation").GetComponent<AdaptationElements>();
-
+		classification = GameObject.Find ("DecisionReader").GetComponent<ReadDecision>();
+		
 		timeHistory.Add(Time.time);
 		currentTimeHistory.Add (System.DateTime.Now.ToString ("HH:mm:ss.fff"));
 		emotionalHistory.Add(emotiv.getAffectivData());
