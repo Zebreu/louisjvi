@@ -7,6 +7,7 @@ import sys
 
 logpath = "Log\\";
 filepath = "Louis-JVI-log.txt"
+facepath = "Louis-JVI-FaceReaderLog.txt"
 decisionpath = "Louis-JVI-decision.txt"
 
 def classification(segment):
@@ -43,7 +44,7 @@ def data_imputation(log, segment):
     else:
         return segment
 
-def text_to_array(log, segment):
+def text_to_array(log, segment, face_segment):
     lines = [line.strip().split(" ") for line in segment]
     for line in lines:
         line[-1] = time_to_seconds(line[-1])
@@ -56,8 +57,45 @@ def text_to_array(log, segment):
     segment[0][1] = numpy.nan
     
     segment = segment.astype(numpy.float64)
+
+    lines = [for line in face_segment]
+    for line in lines:
+        line[0] = time_to_seconds(line[0])
+
+    face_segment = numpy.array(face_segment).astype(numpy.float64)
+
+    to_stack = numpy.zeros((segment.shape[0],face_segment.shape[1]))
+    to_stack[to_stack == 0] = numpy.nan
+    
+    times = segment[:,-1]
+    for row in face_segment:
+        current_time = row[0]
+        smallest = float("inf")
+        new_distance = 0
+        for i,one_time in enumerate(times):
+            new_distance = math.fabs(one_time - current_time)
+            if new_distance > smallest:
+                to_stack[i-1] = row
+                break
+            else:
+                smallest = new_distance
+
+    segment = numpy.hstack((to_stack,segment))
+
     segment = data_imputation(log, segment)
+
     return segment
+
+def process_facereader(segment):
+    segment = [line.strip().split("    ") for line in segment]
+    final_segment = []
+    for line in segment:
+        if len(line) > 10:
+            line = line[1:11]
+            final_line = [value.strip().split(" ")[-1] for value in line]
+            final_segment.append(final_line)
+
+    return final_segment
 
 def write_back(decision,time):
     with open(os.path.join(logpath,decisionpath),"a") as opened_file:
@@ -68,18 +106,38 @@ def main():
     while filepath not in os.listdir(logpath):
         time.sleep(10)
     with open(os.path.join(logpath,filepath),"r") as opened_file:
-        while True: 
-            segment = opened_file.readlines()
-            if len(segment) > 1:
-                print segment[0], segment[-1]
-                segment = text_to_array(log,segment)
-                log.append(segment)
-                print segment.shape, segment[0][-1], segment[-1][-1], segment.dtype
-                decision = classification(segment)
-                write_back(decision,segment[-1][0])
-            elif len(log) > 1:
-                numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
-            time.sleep(10)
+        with open(os.path.join(logpath,facepath),"r") as face_file:
+            while True: 
+                segment = opened_file.readlines()
+                face_segment = face_file.readlines()
+                if len(face_segment) > 1:
+                    face_segment = process_facereader(face_segment)
+                if len(segment) > 1:
+                    print segment[0], segment[-1]
+                    segment = text_to_array(log,segment,face_segment)
+                    log.append(segment)
+                    print segment.shape, segment[0][-1], segment[-1][-1], segment.dtype
+                    decision = classification(segment)
+                    write_back(decision,segment[-1][0])
+                elif len(log) > 1:
+                    numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
+                time.sleep(10)
 
 
 main()
+
+"""
+
+Checklist
+
+Start FaceReader
+Start FaceReader External Control
+Connect to FaceReader
+Click Enable Detailed Log
+Click Start Analysis
+
+Start Emotiv Control Panel
+
+Start TestBench
+
+"""

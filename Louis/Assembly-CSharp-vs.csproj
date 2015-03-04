@@ -88,11 +88,11 @@
  <Reference Include="DotNetEmotivSDK-vs2010">
  <HintPath>C:/Users/locarno/Documents/GitHub/louisjvi/Louis/Assets/DotNetEmotivSDK-vs2010.dll</HintPath>
  </Reference>
- <Reference Include="Tobii.EyeTracking.IO">
- <HintPath>C:/Users/locarno/Documents/GitHub/louisjvi/Louis/Assets/Tobii.EyeTracking.IO.dll</HintPath>
- </Reference>
  <Reference Include="FaceReaderAPI">
  <HintPath>C:/Users/locarno/Documents/GitHub/louisjvi/Louis/Assets/FaceReaderAPI.dll</HintPath>
+ </Reference>
+ <Reference Include="Tobii.EyeTracking.IO">
+ <HintPath>C:/Users/locarno/Documents/GitHub/louisjvi/Louis/Assets/Tobii.EyeTracking.IO.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
