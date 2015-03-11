@@ -1,20 +1,26 @@
-import numpy
-
 import datetime
 import time
 import os
 import sys
+import math
+
+import numpy
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 
 logpath = "Log\\";
 filepath = "Louis-JVI-log.txt"
 facepath = "Louis-JVI-FaceReaderLog.txt"
 decisionpath = "Louis-JVI-decision.txt"
 
-def classification(segment):
-    if int((segment[-1][-1]%1) * 10) == 1: #Bogus line to test things
+def classification(log):
+    if False:
         return "1"
     else:
         return "0"
+
+def train(logall):
+    pass
 
 def seconds_to_time(timeseconds):
     return str(datetime.timedelta(seconds=timeseconds))
@@ -32,7 +38,7 @@ def data_imputation(log, segment):
             log_and_segment = numpy.vstack((log_array,segment))
         else:
             log_and_segment = segment
-        for i in range(segment.shape[1]):
+        for i in range(1,segment.shape[1]-1):
             col = log_and_segment[:,i]
             if numpy.isnan(col).all():
                 segment[:,i] = numpy.nan_to_num(col)
@@ -57,9 +63,10 @@ def text_to_array(log, segment, face_segment):
     segment[0][1] = numpy.nan
     
     segment = segment.astype(numpy.float64)
+    segment = segment[:,3:]
 
-    lines = [for line in face_segment]
-    for line in lines:
+    #lines = [line for line in face_segment]
+    for line in face_segment:
         line[0] = time_to_seconds(line[0])
 
     face_segment = numpy.array(face_segment).astype(numpy.float64)
@@ -80,19 +87,25 @@ def text_to_array(log, segment, face_segment):
             else:
                 smallest = new_distance
 
+    #print segment.shape
+    #print "Stacking!"
     segment = numpy.hstack((to_stack,segment))
-
+    #print segment.shape
     segment = data_imputation(log, segment)
 
     return segment
 
 def process_facereader(segment):
-    segment = [line.strip().split("    ") for line in segment]
+    segment = [line.replace(",",".").strip().split("    ") for line in segment]
+    #print len(segment)
     final_segment = []
     for line in segment:
         if len(line) > 10:
             line = line[1:11]
             final_line = [value.strip().split(" ")[-1] for value in line]
+            final_segment.append(final_line)
+        else:
+            final_line = [line[1].strip().split(" ")[-1]]+[numpy.nan, numpy.nan, numpy.nan, numpy.nan, numpy.nan, numpy.nan, numpy.nan, numpy.nan, numpy.nan]
             final_segment.append(final_line)
 
     return final_segment
@@ -113,12 +126,12 @@ def main():
                 if len(face_segment) > 1:
                     face_segment = process_facereader(face_segment)
                 if len(segment) > 1:
-                    print segment[0], segment[-1]
+                    #print segment[0], segment[-1]
                     segment = text_to_array(log,segment,face_segment)
                     log.append(segment)
                     print segment.shape, segment[0][-1], segment[-1][-1], segment.dtype
-                    decision = classification(segment)
-                    write_back(decision,segment[-1][0])
+                    decision = classification(log)
+                    write_back(decision,segment[-1][-1])
                 elif len(log) > 1:
                     numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
                 time.sleep(10)
@@ -141,3 +154,4 @@ Start Emotiv Control Panel
 Start TestBench
 
 """
+#numpy.savetxt("currentparticipant.txt",a,fmt="%.6e")

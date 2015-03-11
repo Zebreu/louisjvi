@@ -40,8 +40,9 @@ public class UserModel : MonoBehaviour {
 	
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
-		eyetrackingEnabled = false;
+		eyetrackingEnabled = false; // Eyetracking disabled
 		adapting = false;
+		adaptingSimple = false;
 		
 		if (eyetrackingEnabled) // Eyetracking disabled
 		{
