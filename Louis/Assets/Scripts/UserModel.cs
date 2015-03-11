@@ -15,6 +15,7 @@ public class UserModel : MonoBehaviour {
 	List<string> currentTimeHistory = new List<string> ();
 	List<float> timeHistory = new List<float>(); 
 	List<float> progressionHistory = new List<float>();
+	List<string> allDecisions = new List<string> ();
 	int currentProgress;
 
 	List<double> frustrationHistory = new List<double> ();
@@ -31,7 +32,10 @@ public class UserModel : MonoBehaviour {
 	double windowMotivation = 0.0;
 	double windowFrustration = 0.0;
 
+	int lastDecisionsNumber = 10;
+
 	bool adapting;
+	bool adaptingSimple;
 	bool eyetrackingEnabled;
 	
 	void Start () {
@@ -69,6 +73,7 @@ public class UserModel : MonoBehaviour {
 	void Update () {
 		timeHistory.Add (Time.time);
 		currentTimeHistory.Add (System.DateTime.Now.ToString ("HH:mm:ss.fff"));
+		allDecisions = classification.getDecisions ();
 		emotionalHistory.Add(emotiv.getAffectivData());
 		if (eyetrackingEnabled) // Eyetracking disabled
 		{
@@ -90,6 +95,19 @@ public class UserModel : MonoBehaviour {
 		}
 
 		if (adapting)
+		{
+			if ((timeHistory.Last () - startWindowAdaptation) / timeWindowAdaptation > 1.0f)
+			{
+				List<string> lastDecisions = allDecisions.GetRange (allDecisions.Count-lastDecisionsNumber-1, lastDecisionsNumber);
+				if (ExamineDecisions(lastDecisions))
+				{
+					adaptation.Assist ();
+				}
+				startWindowAdaptation = timeHistory.Last ();
+			}
+		}
+
+		if (adaptingSimple)
 		{
 			if ((timeHistory.Last () - startWindowAdaptation) / timeWindowAdaptation > 1.0f)
 			{
@@ -126,6 +144,17 @@ public class UserModel : MonoBehaviour {
 	public double[] GetEmotivData()
 	{
 		return emotionalHistory.Last ();
+	}
+
+	bool ExamineDecisions(List<string> lastDecisions)
+	{
+		int sum = 0;
+		foreach ( String decision in lastDecisions)
+		{
+			string[] timeAndint = decision.Split (',');
+			sum += Convert.ToInt32(timeAndint[1]);
+		}
+		return sum > (lastDecisionsNumber / 2);
 	}
 
 	void TriggerAdaptation()

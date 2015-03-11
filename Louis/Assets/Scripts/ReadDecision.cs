@@ -23,9 +23,10 @@ public class ReadDecision : MonoBehaviour {
 		float new_time = Time.time;
 		if (new_time - time_counter > 10)
 		{
+			alldecisions.Clear ();
 			string[] decisionlines = System.IO.File.ReadAllLines(decisionfile);
 			alldecisions.AddRange (decisionlines);
-			Debug.Log (decisionlines.Last());
+			//Debug.Log (decisionlines.Last());
 			time_counter = new_time;
 		}
 	}

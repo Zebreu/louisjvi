@@ -12,9 +12,9 @@ decisionpath = "Louis-JVI-decision.txt"
 
 def classification(segment):
     if int((segment[-1][-1]%1) * 10) == 1: #Bogus line to test things
-        return "Help"
+        return "1"
     else:
-        return "Nothing"
+        return "0"
 
 def seconds_to_time(timeseconds):
     return str(datetime.timedelta(seconds=timeseconds))
