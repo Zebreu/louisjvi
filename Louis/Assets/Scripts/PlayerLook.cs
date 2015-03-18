@@ -27,7 +27,18 @@ public class PlayerLook : MonoBehaviour {
 		if (!inventory.inventoryOpen && !inventory.journalShown)
 		{
 			body.transform.Rotate (new Vector3 (0, Input.GetAxis ("Mouse X") * sensibility, 0), Space.World);
-			transform.Rotate (new Vector3 (-Input.GetAxis ("Mouse Y") * sensibility, 0, 0));
+			Vector3 rotationY = new Vector3 (-Input.GetAxis ("Mouse Y") * sensibility, 0, 0);
+			
+			transform.Rotate (rotationY);
+			
+			if (Application.loadedLevelName.Equals ("cavernScene"))
+			{
+				if (transform.localEulerAngles[1] < 200)
+				{
+					transform.Rotate (-rotationY);
+				}
+			}
+			
 		}
 		if (Input.GetButtonDown ("Turn headlight on/off"))
 		{

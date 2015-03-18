@@ -8,14 +8,15 @@ public class StartGame : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		text = "Landing successful! You're an astronaut collecting surface samples, and Commander Arnold (his picture appears below when he talks to you) is waiting for you on the orbiter. However, on your way back to the lander, the ground shakes and darkness engulfs you!";	
+		//text = "Landing successful! You're an astronaut collecting surface samples, and Commander Arnold (his picture appears below when he talks to you) is waiting for you on the orbiter. However, on your way back to the lander, the ground shakes and darkness engulfs you!";	
+		text = "Landing successful! You're an astronaut collecting surface samples, and Commander Arnold (his picture appears below when he talks to you) is waiting for you on the orbiter.";	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown ("Confirm"))
 		{
-			Application.LoadLevel("cavernScene");
+			Application.LoadLevel("calibrationScene");
 		}
 	}
 	

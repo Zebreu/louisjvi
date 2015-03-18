@@ -23,6 +23,9 @@ public class Inventory : MonoBehaviour {
 	
 	public Texture2D toolDrawing;
 	
+	public Texture2D helpSheet;
+	bool helpSheetOn;
+	
 	private bool useBackup = false;
 	
 	private int inventoryGrid = -1;
@@ -70,6 +73,8 @@ public class Inventory : MonoBehaviour {
 	
 	void Start () {
 		mainCamera = Camera.main;
+		
+		helpSheetOn = false;
 	
 		Screen.lockCursor = true;
 		GameObject tasks = GameObject.Find ("Tasks");
@@ -372,6 +377,17 @@ public class Inventory : MonoBehaviour {
 			TableToggle();
 		}
 		
+		if (Input.GetButtonDown("Open Help Sheet"))
+		{
+			if (helpSheetOn)
+			{
+				helpSheetOn = false;
+			} else
+			{
+				helpSheetOn = true;
+			}
+		}
+		
 		if (Input.GetButtonDown ("Open Tool"))
 		{
 			ToolToggle ();
@@ -661,12 +677,7 @@ public class Inventory : MonoBehaviour {
 		GUI.skin.box.wordWrap = false;
 		
 		GUI.skin.button.stretchWidth = false;
-		GUI.skin.button.fontSize = 50;
-		
-		if (tableOpen)
-		{
-			GUI.DrawTexture(new Rect(0,0,1280,773), periodicTable);
-		}
+		GUI.skin.button.fontSize = 50;		
 		
 		if (seenObject != "") 
 		{
@@ -687,6 +698,17 @@ public class Inventory : MonoBehaviour {
 				// Value of 18 seems best to center the crosshair, larger than Unity's calculated width (16*2) and smaller than the real texture's width (20*2)
 			}
 		}
+		
+		if (tableOpen)
+		{
+			GUI.DrawTexture(new Rect(20,20,1280,773), periodicTable);
+		}
+		
+		if (helpSheetOn)
+		{
+			GUI.DrawTexture(new Rect(20,20,1600,900), helpSheet);
+		}
+		
 		if (journalShown)
 		{
 			showJournal();
