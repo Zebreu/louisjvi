@@ -7,20 +7,29 @@ import math
 import numpy
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from skleanr.externals import joblib
 
 logpath = "Log\\";
 filepath = "Louis-JVI-log.txt"
 facepath = "Louis-JVI-FaceReaderLog.txt"
 decisionpath = "Louis-JVI-decision.txt"
 
-def classification(log):
-    if False:
-        return "1"
+def classification(log, knnClassifier):
+    if len(log) > 1:
+        log_array = numpy.vstack(log)
+        seq_array = log_array[1:-2]
+        seq_array = seq_array[-3000:]
+        seq_array = statisticalparameters(seq_array)
+        prediction = knnClassifier.predict(seq_array)
+        return str(prediction)
     else:
         return "0"
 
 def train(logall):
     pass
+
+def statisticalparameters(sequence):
+    return numpy.hstack([sequence.mean(axis=0),sequence.std(axis=0),sequence.min(axis=0),sequence.max(axis=0)])
 
 def seconds_to_time(timeseconds):
     return str(datetime.timedelta(seconds=timeseconds))
@@ -63,7 +72,7 @@ def text_to_array(log, segment, face_segment):
     segment[0][1] = numpy.nan
     
     segment = segment.astype(numpy.float64)
-    segment = segment[:,3:]
+    segment = segment[:,4:]
 
     #lines = [line for line in face_segment]
     for line in face_segment:
@@ -115,6 +124,7 @@ def write_back(decision,time):
         opened_file.write(decision+","+str(time)+"\n")
 
 def main():
+    knnClassifier = joblib.load("knn7.clf")
     log = []
     while filepath not in os.listdir(logpath):
         time.sleep(10)
@@ -130,7 +140,7 @@ def main():
                     segment = text_to_array(log,segment,face_segment)
                     log.append(segment)
                     print segment.shape, segment[0][-1], segment[-1][-1], segment.dtype
-                    decision = classification(log)
+                    decision = classification(log, knnClassifier)
                     write_back(decision,segment[-1][-1])
                 elif len(log) > 1:
                     numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
