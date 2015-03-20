@@ -593,8 +593,10 @@ public class Inventory : MonoBehaviour {
 		//GUI.Label(new Rect(Screen.width*0.375f, Screen.height*0.198f, 450f, 60f), successMessages[successStates],"box");
 		
 		// Config Tobii monitor
-		GUI.DrawTexture(new Rect(-Screen.width*0.042f,Screen.height*0.063f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
-		GUI.Label(new Rect(Screen.width*0.370f, Screen.height*0.18f, 450f, 66f), successMessages[successStates],"box");
+		//GUI.DrawTexture(new Rect(-Screen.width*0.042f,Screen.height*0.063f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
+		//GUI.Label(new Rect(Screen.width*0.370f, Screen.height*0.18f, 450f, 66f), successMessages[successStates],"box");
+		GUI.DrawTexture(new Rect(-Screen.width*0.0005f,Screen.height*0.1f,1500f,1500f*0.4017f), toolDrawing); //Original size: (0,0,2049,823) 
+		GUI.Label(new Rect(Screen.width*0.377f, Screen.height*0.21f, 450f, 66f), successMessages[successStates],"box");
 		
 		
 		

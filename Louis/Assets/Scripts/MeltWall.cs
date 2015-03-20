@@ -21,6 +21,16 @@ public class MeltWall : MonoBehaviour {
 		torch.SetActive(false);
 	}
 	
+	void OnLevelWasLoaded()
+	{
+		toMelt = GameObject.FindGameObjectsWithTag("Melt1");
+		toMelt2 = GameObject.FindGameObjectsWithTag("Melt2");
+		melted1 = false;
+		melted2 = false;
+		torch = GameObject.Find ("methanetorch");
+		torch.SetActive(false);
+	}
+	
 	// Update is called once per frame
 	void Update () 
 	{

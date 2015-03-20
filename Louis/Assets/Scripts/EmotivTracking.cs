@@ -240,7 +240,7 @@ public class EmotivTracking : MonoBehaviour {
 	void Update () {
 		if (tracking)
 		{
-			engine.ProcessEvents(1000);
+			engine.ProcessEvents(2000);
 		}
 	}
 	

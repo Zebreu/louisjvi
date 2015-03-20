@@ -13,6 +13,13 @@ public class Dissolving : MonoBehaviour {
 		hose.SetActive(false);
 	}
 	
+	void OnLevelWasLoaded()
+	{
+		dissolve = false;
+		hose = GameObject.Find ("acidlauncher");
+		hose.SetActive(false);
+	}
+	
 	void Update()
 	{
 		if (dissolve)

@@ -21,7 +21,7 @@ public class ReadDecision : MonoBehaviour {
 	void Update () 
 	{
 		float new_time = Time.time;
-		if (new_time - time_counter > 10)
+		if (new_time - time_counter > 10 && System.IO.File.Exists (decisionfile))
 		{
 			alldecisions.Clear ();
 			string[] decisionlines = System.IO.File.ReadAllLines(decisionfile);

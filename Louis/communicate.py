@@ -7,7 +7,7 @@ import math
 import numpy
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from skleanr.externals import joblib
+from sklearn.externals import joblib
 
 logpath = "Log\\";
 filepath = "Louis-JVI-log.txt"
@@ -17,11 +17,11 @@ decisionpath = "Louis-JVI-decision.txt"
 def classification(log, knnClassifier):
     if len(log) > 1:
         log_array = numpy.vstack(log)
-        seq_array = log_array[1:-2]
+        seq_array = log_array[:,1:-2]
         seq_array = seq_array[-3000:]
         seq_array = statisticalparameters(seq_array)
         prediction = knnClassifier.predict(seq_array)
-        return str(prediction)
+        return str(prediction[0])
     else:
         return "0"
 
@@ -126,6 +126,7 @@ def write_back(decision,time):
 def main():
     knnClassifier = joblib.load("knn7.clf")
     log = []
+    print "Ready to start"
     while filepath not in os.listdir(logpath):
         time.sleep(10)
     with open(os.path.join(logpath,filepath),"r") as opened_file:
@@ -143,6 +144,7 @@ def main():
                     decision = classification(log, knnClassifier)
                     write_back(decision,segment[-1][-1])
                 elif len(log) > 1:
+                	print "Log saved, ready to quit"
                     numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
                 time.sleep(10)
 
