@@ -41,7 +41,7 @@ public class UserModel : MonoBehaviour {
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
 		eyetrackingEnabled = false; // Eyetracking disabled
-		adapting = false;
+		adapting = true;
 		adaptingSimple = false;
 		
 		if (eyetrackingEnabled) // Eyetracking disabled
@@ -99,6 +99,7 @@ public class UserModel : MonoBehaviour {
 		{
 			if ((timeHistory.Last () - startWindowAdaptation) / timeWindowAdaptation > 1.0f)
 			{
+
 				List<string> lastDecisions = allDecisions.GetRange (allDecisions.Count-lastDecisionsNumber-1, lastDecisionsNumber);
 				if (ExamineDecisions(lastDecisions))
 				{
@@ -153,7 +154,7 @@ public class UserModel : MonoBehaviour {
 		foreach ( String decision in lastDecisions)
 		{
 			string[] timeAndint = decision.Split (',');
-			sum += Convert.ToInt32(timeAndint[1]);
+			sum += Convert.ToInt32(timeAndint[0]);
 		}
 		return sum > (lastDecisionsNumber / 2);
 	}

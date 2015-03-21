@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 using System.Linq;
 
 public class Inventory : MonoBehaviour {
@@ -19,12 +20,22 @@ public class Inventory : MonoBehaviour {
 	Camera mainCamera;
 	public string seenObject = "";
 	
+	public Texture2D periodicTableMarked;
 	public Texture2D periodicTable;
 	
 	public Texture2D toolDrawing;
-	
+
+	public Texture2D helpSheet2;
+	public Texture2D helpSheet3;
+	public Texture2D helpSheet4;
+	public Texture2D helpSheet5;
+	public Texture2D helpSheetFull;
 	public Texture2D helpSheet;
 	bool helpSheetOn;
+	public int helpSheetCounter;
+	public Texture2D[] helpsheets;
+
+	int calibCounter = 0;
 	
 	private bool useBackup = false;
 	
@@ -75,12 +86,20 @@ public class Inventory : MonoBehaviour {
 		mainCamera = Camera.main;
 		
 		helpSheetOn = false;
-	
+		helpSheet = helpSheet2;
+		helpSheetCounter = 0;
+		helpsheets = new Texture2D[]{helpSheet2,helpSheet3,helpSheet4,helpSheet5,helpSheetFull};
+
 		Screen.lockCursor = true;
 		GameObject tasks = GameObject.Find ("Tasks");
 		taskManagement = tasks.GetComponent<TaskManagement>();
 		inventory.Add("I",1);
 		inventory.Add("II",1);
+
+		inventory.Add ("H", 10);
+		inventory.Add ("C", 10);
+		inventory.Add ("O", 10);
+		inventory.Add ("N", 10);
 		
 		bonds = new Dictionary<Rect, Texture2D>();
 		bondsLogic = new Dictionary<string, List<int[]>>();
@@ -362,6 +381,33 @@ public class Inventory : MonoBehaviour {
 	
 		}
 	}
+
+	IEnumerator Earthquake()
+	{
+		PlayerLook playerLook = mainCamera.GetComponent<PlayerLook>();
+		//playerMove = player.GetComponent<PlayerMove>();
+		
+		playerLook.enabled = false;
+		//playerMove.SetActive(false);
+		//Vector3 originPosition = mainCamera.transform.position;
+		float originalStrength = 0.007f;
+		Quaternion originRotation = mainCamera.transform.rotation;
+		for (int i = 40; i > 0; i--)
+		{
+			float strength = originalStrength*i;
+			mainCamera.transform.rotation = new Quaternion(originRotation.x + UnityEngine.Random.Range(-strength,strength), originRotation.y + UnityEngine.Random.Range(-strength,strength), originRotation.z + UnityEngine.Random.Range(-strength,strength), originRotation.w + UnityEngine.Random.Range(-strength,strength));
+			//yield return new WaitForSeconds(0.1f);
+			//yield return new WaitForSeconds(0.01f);
+			yield return new WaitForSeconds(0.03f);
+			yield return null;
+		}
+		
+		//mainCamera.transform.position = originPosition;
+		mainCamera.transform.rotation = originRotation;
+		playerLook.enabled = true;
+		Application.LoadLevel("cavernScene");
+		//playerMove.SetActive(true);
+	}
 	
 	void Update () {
 		Selection ();
@@ -395,18 +441,45 @@ public class Inventory : MonoBehaviour {
 		}
 		if (Input.GetButtonDown ("Combine") && toolOpen)
 		{
-			string compound = taskManagement.Combine (toolContents, bondsLogic);
-			if (compound == "None")
+			if (Application.loadedLevelName.Equals("calibrationScene"))
 			{
-				Debug.Log("Not available");
-				successStates = 1;
-			} else {
-				successStates = 2;
-				Debug.Log (compound);
-				InventoryFill(compound);
 				useBackup = false;
 				ToolToggle ();
 				ToolToggle ();
+				if (calibCounter == 0)
+				{
+					taskManagement.CreateNewTrigger("communic_calibHard1");
+					calibCounter += 1;
+				} else
+				{
+					ToolToggle ();
+					inventory.Remove ("H");
+					inventory.Remove ("C");
+					inventory.Remove ("O");
+					inventory.Remove ("N");
+					GameObject player = GameObject.Find("Player");
+					AudioSource[] audios = player.GetComponents<AudioSource>();
+					audios[1].Play();
+					StartCoroutine(Earthquake());
+				}
+				useBackup = false;
+				ToolToggle ();
+				ToolToggle ();
+			} else 
+			{
+				string compound = taskManagement.Combine (toolContents, bondsLogic);
+				if (compound == "None")
+				{
+					Debug.Log("Not available");
+					successStates = 1;
+				} else {
+					successStates = 2;
+					Debug.Log (compound);
+					InventoryFill(compound);
+					useBackup = false;
+					ToolToggle ();
+					ToolToggle ();
+				}
 			}
 		}
 		if (Input.GetButtonDown ("Show Journal"))

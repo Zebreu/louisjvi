@@ -21,14 +21,23 @@ public class ReadDecision : MonoBehaviour {
 	void Update () 
 	{
 		float new_time = Time.time;
-		if (new_time - time_counter > 10 && System.IO.File.Exists (decisionfile))
+		if (new_time - time_counter > 2)
 		{
-			alldecisions.Clear ();
-			string[] decisionlines = System.IO.File.ReadAllLines(decisionfile);
-			alldecisions.AddRange (decisionlines);
-			//Debug.Log (decisionlines.Last());
-			time_counter = new_time;
+			if (System.IO.File.Exists (decisionfile))
+			{
+				alldecisions.Clear ();
+				string[] decisionlines = System.IO.File.ReadAllLines(decisionfile);
+				alldecisions.AddRange (decisionlines);
+				//Debug.Log (decisionlines.Last());
+				time_counter = new_time;
+			}
+			else 
+			{
+				alldecisions.Add("0,"+new_time.ToString());
+				time_counter = new_time;
+			}
 		}
+
 	}
 	
 	public List<string> getDecisions()

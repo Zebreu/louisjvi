@@ -30,7 +30,7 @@ public class PlayerLook : MonoBehaviour {
 			Vector3 rotationY = new Vector3 (-Input.GetAxis ("Mouse Y") * sensibility, 0, 0);
 			
 			transform.Rotate (rotationY);
-			
+
 			if (Application.loadedLevelName.Equals ("cavernScene"))
 			{
 				if (transform.localEulerAngles[1] < 200)
@@ -38,6 +38,7 @@ public class PlayerLook : MonoBehaviour {
 					transform.Rotate (-rotationY);
 				}
 			}
+
 			
 		}
 		if (Input.GetButtonDown ("Turn headlight on/off"))

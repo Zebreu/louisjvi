@@ -9,8 +9,9 @@ public class AdaptationElements : MonoBehaviour {
     Camera mainCamera;
     public Inventory inventory;
     public Transform textTriggerPrefab;
+	bool firstHelpSheet = false;
     
-	List<string> generalTips = new List<string>{"gameinfo_lewisCenterTip1", "gameinfo_lewisValenceTip1"};
+	List<string> generalTips = new List<string>{"gameinfo_hydrogenTip1","gameinfo_lewisCenterTip1", "gameinfo_lewisValenceTip1"};
 	List<string> heatTips = new List<string>{"gameinfo_lewisCTFETip1"};
     List<string> acidTips = new List<string>{"gameinfo_lewisChargeTip1","gameinfo_lewisAcidTip1", "gameinfo_lewisFormulaTip1"};
 	List<string> navigationTips = new List<string>{"gameinfo_navigationTipQuantity1","gameinfo_navigationTip1"};
@@ -140,13 +141,25 @@ public class AdaptationElements : MonoBehaviour {
 			GiveHint(generalTips);
 			return;
 		}
+
+		if (taskManagement.progressionIndex == 0 && Application.loadedLevelName.Equals("cavernScene") && !firstHelpSheet)
+		{
+			CreateNewTrigger("gameinfo_helpsheet1");
+			firstHelpSheet = false;
+		}
     }
     
     void GiveHint(List<string> someTips)
     {
         if (someTips.Count == 0)
             {
-                //gives answer?
+				CreateNewTrigger("gameinfo_helpsheet1");
+				inventory.helpSheetCounter += 1;
+				inventory.helpSheet = inventory.helpsheets[inventory.helpSheetCounter];
+				if (inventory.helpSheetCounter == 1)
+				{
+					inventory.periodicTable = inventory.periodicTableMarked;
+				}
                 return;
             }
             

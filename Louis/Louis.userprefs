@@ -1,20 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EmotivTracking.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ReadDecision.cs">
     <Files>
-      <File FileName="Assets\Scripts\CalibrationEvents.cs" Line="16" Column="4" />
-      <File FileName="Assets\Scripts\ReadDecision.cs" Line="24" Column="67" />
-      <File FileName="Assets\Scripts\UserModel.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AdaptationElements.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CalibrationEvents.cs" Line="8" Column="3" />
+      <File FileName="Assets\Scripts\ReadDecision.cs" Line="7" Column="2" />
+      <File FileName="Assets\Scripts\UserModel.cs" Line="155" Column="4" />
+      <File FileName="Assets\Scripts\AdaptationElements.cs" Line="162" Column="6" />
       <File FileName="Assets\Scripts\EyeTrackingClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\RecordingData.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Inventory.cs" Line="588" Column="105" />
-      <File FileName="Assets\Scripts\TaskManagement.cs" Line="139" Column="46" />
-      <File FileName="Assets\Scripts\MeltWall.cs" Line="12" Column="19" />
-      <File FileName="Assets\Scripts\Descent.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Dissolving.cs" Line="11" Column="20" />
-      <File FileName="Assets\Scripts\EmoEngine.cs" Line="557" Column="1" />
-      <File FileName="Assets\Scripts\EmotivTracking.cs" Line="242" Column="4" />
+      <File FileName="Assets\Scripts\RecordingData.cs" Line="60" Column="95" />
+      <File FileName="Assets\Scripts\Inventory.cs" Line="24" Column="33" />
+      <File FileName="Assets\Scripts\TaskManagement.cs" Line="163" Column="50" />
+      <File FileName="Assets\Scripts\PlayerLook.cs" Line="41" Column="4" />
+      <File FileName="Assets\Scripts\InventoryTests.cs" Line="87" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

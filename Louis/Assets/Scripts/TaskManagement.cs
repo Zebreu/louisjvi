@@ -160,7 +160,7 @@ public class TaskManagement : MonoBehaviour {
 		taskTriggers = new List<GameObject>(GameObject.FindGameObjectsWithTag("TaskTrigger"));
 		player = GameObject.Find ("Player");
 	}
-	void CreateNewTrigger(string triggerName)
+	public void CreateNewTrigger(string triggerName)
 	{
 		Vector3 toSpawn = player.transform.position;
 		UnityEngine.Object newTrigger = Instantiate(textTriggerPrefab,toSpawn,Quaternion.identity);
