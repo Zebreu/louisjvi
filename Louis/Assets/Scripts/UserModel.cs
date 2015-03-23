@@ -150,13 +150,28 @@ public class UserModel : MonoBehaviour {
 
 	bool ExamineDecisions(List<string> lastDecisions)
 	{
-		int sum = 0;
+		int sumKNN = 0;
+		int sumRF = 0;
 		foreach ( String decision in lastDecisions)
 		{
 			string[] timeAndint = decision.Split (',');
-			sum += Convert.ToInt32(timeAndint[0]);
+			sumKNN += Convert.ToInt32(timeAndint[0]);
+			sumRF += Convert.ToInt32(timeAndint[1]);
 		}
-		return sum > (lastDecisionsNumber / 2);
+
+		bool knnAssist = false;
+		bool rfAssist = false;
+		if (sumKNN > (lastDecisionsNumber / 2))
+		{
+			knnAssist = true;
+		}
+		if (sumRF > (lastDecisionsNumber / 2))
+		{
+			rfAssist = true;
+		}
+		bool answer = knnAssist || rfAssist;
+
+		return answer;
 	}
 
 	void TriggerAdaptation()

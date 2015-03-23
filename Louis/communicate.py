@@ -13,20 +13,56 @@ logpath = "Log\\";
 filepath = "Louis-JVI-log.txt"
 facepath = "Louis-JVI-FaceReaderLog.txt"
 decisionpath = "Louis-JVI-decision.txt"
+easypath = "Louis-JVI-calibEasy.txt"
+hardpath = "Louis-JVI-calibHard.txt"
 
-def classification(log, knnClassifier):
+def classification(log, knnClassifier, rfClassifier):
     if len(log) > 1:
         log_array = numpy.vstack(log)
         seq_array = log_array[:,1:-2]
         seq_array = seq_array[-3000:]
         seq_array = statisticalparameters(seq_array)
         prediction = knnClassifier.predict(seq_array)
-        return str(prediction[0])
+        if rfClassifier != None:
+            predictionRF = rfClassifier.predict(seq_array)
+        else:
+            predictionRF = [0]
+        answer = str(prediction[0])+","+str(predictionRF[0])
+        return answer
     else:
-        return "0"
+        return "0,0"
 
-def train(logall):
-    pass
+def train(logall, easy_time, hard_time):
+    rfClassifier = RandomForestClassifier(n_estimators=100)
+    
+    times = [easy_time, hard_time]
+    times_seconds = []
+    for time in times:
+        time = time.strip().split(",")
+        times_seconds.append(time_to_seconds(time[1]))
+
+    log_array = numpy.vstack(logall)
+
+    indices = [0,0]
+    time_array = log_array[:,-1]
+    for i in range(2):
+        for index,time in enumerator(time_array):
+            if math.fabs(time - times_seconds[i]) < 0.01:
+                indices[i] = index
+                break
+    
+    easy_array = log_array[0:indices[0]]
+    hard_array = log_array[indices[0]:indices[1]]
+
+    labels0 = [0]*easy_array.shape[0]
+    labels1 = [1]*hard_array.shape[0]
+    
+    label_array = numpy.array(labels0+labels1,dtype=numpy.int32)
+    training_array = numpy.vstack([easy_array, hard_array])
+
+    rfClassifier.fit(training_array, label_array)
+    joblib.dump(rfClassifier,os.path.join(logpath,"rfClassifier.clf"))
+    return rfClassifier
 
 def statisticalparameters(sequence):
     return numpy.hstack([sequence.mean(axis=0),sequence.std(axis=0),sequence.min(axis=0),sequence.max(axis=0)])
@@ -125,13 +161,20 @@ def write_back(decision,time):
 
 def main():
     knnClassifier = joblib.load("knn7.clf")
+    rfClassifier = None
+
+    trained = False
+
     log = []
+    easy_time = 0
+    hard_time = 0
+
     print "Ready to start"
     while filepath not in os.listdir(logpath):
-        time.sleep(10)
+        time.sleep(5)
     with open(os.path.join(logpath,filepath),"r") as opened_file:
         with open(os.path.join(logpath,facepath),"r") as face_file:
-            while True: 
+            while True:
                 segment = opened_file.readlines()
                 face_segment = face_file.readlines()
                 if len(face_segment) > 1:
@@ -141,12 +184,21 @@ def main():
                     segment = text_to_array(log,segment,face_segment)
                     log.append(segment)
                     print segment.shape, segment[0][-1], segment[-1][-1], segment.dtype
-                    decision = classification(log, knnClassifier)
+                    decision = classification(log, knnClassifier, rfClassifier)
                     write_back(decision,segment[-1][-1])
                 elif len(log) > 1:
                 	print "Log saved, ready to quit"
                     numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
-                time.sleep(10)
+
+                if (hardpath in os.listdir(logpath)) and not trained:
+                    with open(os.path.join(logpath,easypath),"r") as opened_easy:
+                        easy_time = opened_easy.read()
+                    with open(os.path.join(logpath,hardpath),"r") as opened_hard:
+                        hard_time = opened_hard.read()
+                    rfClassifier = train(log, easy_time, hard_time)
+                    trained = True
+
+                time.sleep(2)
 
 
 main()
