@@ -153,12 +153,15 @@ public class AdaptationElements : MonoBehaviour {
     {
         if (someTips.Count == 0)
             {
-				CreateNewTrigger("gameinfo_helpsheet1");
-				inventory.helpSheetCounter += 1;
-				inventory.helpSheet = inventory.helpsheets[inventory.helpSheetCounter];
-				if (inventory.helpSheetCounter == 1)
-				{
-					inventory.periodicTable = inventory.periodicTableMarked;
+            	if (inventory.helpSheetCounter < 4)
+            	{
+					CreateNewTrigger("gameinfo_helpsheet1");
+					inventory.helpSheetCounter += 1;
+					inventory.helpSheet = inventory.helpsheets[inventory.helpSheetCounter];
+					if (inventory.helpSheetCounter == 1)
+					{
+						inventory.periodicTable = inventory.periodicTableMarked;
+					}
 				}
                 return;
             }

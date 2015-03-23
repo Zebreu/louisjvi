@@ -32,7 +32,7 @@ public class UserModel : MonoBehaviour {
 	double windowMotivation = 0.0;
 	double windowFrustration = 0.0;
 
-	int lastDecisionsNumber = 10;
+	int lastDecisionsNumber = 16;
 
 	bool adapting;
 	bool adaptingSimple;
@@ -161,11 +161,11 @@ public class UserModel : MonoBehaviour {
 
 		bool knnAssist = false;
 		bool rfAssist = false;
-		if (sumKNN > (lastDecisionsNumber / 2))
+		if (sumKNN > (lastDecisionsNumber / 4))
 		{
 			knnAssist = true;
 		}
-		if (sumRF > (lastDecisionsNumber / 2))
+		if (sumRF > (lastDecisionsNumber / 4))
 		{
 			rfAssist = true;
 		}

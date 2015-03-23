@@ -246,7 +246,7 @@ public class Inventory : MonoBehaviour {
 				// Always removes the last two characters of a string, which should be a whitespace and a prefab ID number.
 				seenObject = seenObject.Remove (seenObject.Length-2);		
 				
-				if (Input.GetMouseButton(0)  && (hit.distance < 3.0f))
+				if (Input.GetMouseButton(0)  && (hit.distance < 6.0f))
 				{
 					InventoryFill(seenObject);
 					Destroy(hit.transform.gameObject);					

@@ -32,13 +32,25 @@ def classification(log, knnClassifier, rfClassifier):
     else:
         return "0,0"
 
+def create_sample(training_array, label_array):
+    length = (training_array.shape[0]/20)-1
+    samples = []
+    labels = []
+    for i in range(training_array.shape[0]-length-1):
+        #print training_array[i:length]
+        samples.append(statisticalparameters(training_array[i:i+length]))
+        labels.append(label_array[i+length-1])
+
+    print numpy.array(labels)
+    return numpy.vstack(samples), numpy.array(labels)
+
 def train(logall, easy_time, hard_time):
     rfClassifier = RandomForestClassifier(n_estimators=100)
     
     times = [easy_time, hard_time]
     times_seconds = []
     for time in times:
-        time = time.strip().split(",")
+        time = time.strip().split(" ")
         times_seconds.append(time_to_seconds(time[1]))
 
     log_array = numpy.vstack(logall)
@@ -46,7 +58,7 @@ def train(logall, easy_time, hard_time):
     indices = [0,0]
     time_array = log_array[:,-1]
     for i in range(2):
-        for index,time in enumerator(time_array):
+        for index,time in enumerate(time_array):
             if math.fabs(time - times_seconds[i]) < 0.01:
                 indices[i] = index
                 break
@@ -56,9 +68,14 @@ def train(logall, easy_time, hard_time):
 
     labels0 = [0]*easy_array.shape[0]
     labels1 = [1]*hard_array.shape[0]
+
+    print easy_array.shape, hard_array.shape
     
     label_array = numpy.array(labels0+labels1,dtype=numpy.int32)
     training_array = numpy.vstack([easy_array, hard_array])
+
+    training_array = training_array[:,1:-2]
+    training_array, label_array = create_sample(training_array, label_array)
 
     rfClassifier.fit(training_array, label_array)
     joblib.dump(rfClassifier,os.path.join(logpath,"rfClassifier.clf"))
@@ -187,7 +204,7 @@ def main():
                     decision = classification(log, knnClassifier, rfClassifier)
                     write_back(decision,segment[-1][-1])
                 elif len(log) > 1:
-                	print "Log saved, ready to quit"
+                    print "Log saved, ready to quit"
                     numpy.save(os.path.join(logpath,"currentparticipant"),numpy.vstack(log))
 
                 if (hardpath in os.listdir(logpath)) and not trained:

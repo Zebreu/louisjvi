@@ -33,7 +33,7 @@ public class ReadDecision : MonoBehaviour {
 			}
 			else 
 			{
-				alldecisions.Add("0,"+new_time.ToString());
+				alldecisions.Add("0,0,"+new_time.ToString());
 				time_counter = new_time;
 			}
 		}
