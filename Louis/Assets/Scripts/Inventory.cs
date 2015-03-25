@@ -34,6 +34,8 @@ public class Inventory : MonoBehaviour {
 	bool helpSheetOn;
 	public int helpSheetCounter;
 	public Texture2D[] helpsheets;
+	public Texture2D helpExamples;
+	bool helpExamplesOn;
 
 	int calibCounter = 0;
 	
@@ -86,6 +88,7 @@ public class Inventory : MonoBehaviour {
 		mainCamera = Camera.main;
 		
 		helpSheetOn = false;
+		helpExamplesOn = false;
 		helpSheet = helpSheet2;
 		helpSheetCounter = 0;
 		helpsheets = new Texture2D[]{helpSheet2,helpSheet3,helpSheet4,helpSheet5,helpSheetFull};
@@ -433,7 +436,18 @@ public class Inventory : MonoBehaviour {
 				helpSheetOn = true;
 			}
 		}
-		
+
+		if (Input.GetButtonDown("Open Help Examples"))
+		{
+			if (helpExamplesOn)
+			{
+				helpExamplesOn = false;
+			} else
+			{
+				helpExamplesOn = true;
+			}
+		}
+
 		if (Input.GetButtonDown ("Open Tool"))
 		{
 			ToolToggle ();
@@ -782,6 +796,11 @@ public class Inventory : MonoBehaviour {
 		if (helpSheetOn)
 		{
 			GUI.DrawTexture(new Rect(20,20,1600,900), helpSheet);
+		}
+
+		if (helpExamplesOn)
+		{
+			GUI.DrawTexture(new Rect(20,20,1600,900), helpExamples);
 		}
 		
 		if (journalShown)
