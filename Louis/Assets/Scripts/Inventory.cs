@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour {
 	private int inventoryGrid = -1;
 	
 	public int successStates = 0;
-	string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis"};
+	string[] successMessages = new string[]{"", "Lewis diagram unknown", "Successful synthesis", "Good but incorrect bonds"};
 	
 	int pastIndex;
 	List<Dictionary<string, int>> pastInventories;
@@ -486,7 +486,12 @@ public class Inventory : MonoBehaviour {
 				{
 					Debug.Log("Not available");
 					successStates = 1;
-				} else {
+				}
+				else if (compound == "Bonds")
+				{
+					successStates = 3;
+				}
+				else {
 					successStates = 2;
 					Debug.Log (compound);
 					InventoryFill(compound);

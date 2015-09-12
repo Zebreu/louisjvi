@@ -21,7 +21,7 @@ public class RecordingData : MonoBehaviour {
 	void Start () {
 		DontDestroyOnLoad(transform.gameObject);
 		logging = true;
-		eyetrackingEnabled = false;
+		eyetrackingEnabled = true;
 		gameObject.SetActive(logging);
 		if (logging)
 		{

@@ -327,6 +327,10 @@ public class TaskManagement : MonoBehaviour {
 					{
 						return names[enumerating];
 					}
+					else
+					{
+						return "Bonds";
+					}
 				}
 			}
 			
