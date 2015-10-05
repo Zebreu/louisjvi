@@ -25,14 +25,14 @@ public class UserModel : MonoBehaviour {
 	int indexWindow;
 	int currentIndex;
 	
-	float timeWindowAdaptation = 40.0f;
+	float timeWindowAdaptation = 90.0f;
 	float lastChange = 0.0f;
 	float startWindowAdaptation;
 
 	double windowMotivation = 0.0;
 	double windowFrustration = 0.0;
 
-	int lastDecisionsNumber = 16;
+	int lastDecisionsNumber = timeWindowAdaptation/2 - 1;
 
 	bool adapting;
 	bool adaptingSimple;
