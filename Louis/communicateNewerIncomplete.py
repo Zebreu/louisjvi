@@ -9,19 +9,39 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.externals import joblib
 
+from scipy import signal
+import pyeeg
+
 logpath = "Log\\";
 filepath = "Louis-JVI-log.txt"
 facepath = "Louis-JVI-FaceReaderLog.txt"
 decisionpath = "Louis-JVI-decision.txt"
 easypath = "Louis-JVI-calibEasy.txt"
 hardpath = "Louis-JVI-calibHard.txt"
+eeg_path = "EEG.csv"
 
-def classification(log, knnClassifier, rfClassifier):
+length = 2048 # Number of samples
+order = 5 # Order of the filter
+sample_rate = 128 # Hz, Emotiv specifications
+cutoff_freq = 0.16 # Hz, recommendation by Emotiv
+bands = [0.5,4,7,12,30] # Limits of bands of interests (in Hz too)
+
+# Creating a filter and returning its coefficients  
+nyquist = 0.5*sample_rate
+cutoff = cutoff_freq / nyquist
+b_coef, a_coef = signal.butter(order, cutoff, btype="high", analog = False)
+
+# Creating a window function
+hannwindow = numpy.hanning(length)
+
+def classification(log, knnClassifier, rfClassifier, eeg_segment = None):
     if len(log) > 1:
         log_array = numpy.vstack(log)
         seq_array = log_array[:,1:-2]
         seq_array = seq_array[-3000:]
         seq_array = statisticalparameters(seq_array)
+        if eeg_segment != None:
+            seq_array = numpy.concatenate((seq_array,eeg_segment[:,-2]))
         prediction = knnClassifier.predict(seq_array)
         if rfClassifier != None:
             predictionRF = rfClassifier.predict(seq_array)
@@ -44,7 +64,7 @@ def create_sample(training_array, label_array):
     print numpy.array(labels)
     return numpy.vstack(samples), numpy.array(labels)
 
-def train(logall, easy_time, hard_time):
+def train(logall, easy_time, hard_time, eeg_log=False):
     rfClassifier = RandomForestClassifier(n_estimators=100)
     
     times = [easy_time, hard_time]
@@ -112,7 +132,7 @@ def data_imputation(log, segment):
     else:
         return segment
 
-def text_to_array(log, segment, face_segment):
+def text_to_array(log, segment, face_segment, eeg_segment=None):
     lines = [line.strip().split(" ") for line in segment]
     for line in lines:
         line[-1] = time_to_seconds(line[-1])
@@ -126,6 +146,8 @@ def text_to_array(log, segment, face_segment):
     
     segment = segment.astype(numpy.float64)
     segment = segment[:,4:]
+
+    # Face synchronization and stacking
 
     #lines = [line for line in face_segment]
     for line in face_segment:
@@ -153,9 +175,41 @@ def text_to_array(log, segment, face_segment):
     #print "Stacking!"
     segment = numpy.hstack((to_stack,segment))
     #print segment.shape
+
+    # Eeg synchronization and stacking
+
+    #segment = numpy.hstack((eeg_to_stack, segment))
+
     segment = data_imputation(log, segment)
 
     return segment
+
+def process_eeg(segment): # untested!
+    # Group each channel in a sequence then run the processing on each sequence, missing the formatting for that right now
+    
+    segment = [line.strip().split(" , ") for line in segment]
+
+    names = segment[0]
+
+    segment = segment[1:]
+
+    segment = numpy.array(segment)
+
+    channels = [onetime[:,i] for i in range(segment.shape[1])]
+
+    features = []
+
+    for channel in channels[1:15]:
+        channel = signal.lfilter(b_coef, a_coef, channel)
+        windowed_seq = channel*hannwindow
+        power, power_ratios = pyeeg.bin_power(windowed_seq, bands, sample_rate)
+        feature.append(numpy.concatenate((power, power_ratios)))
+
+    features = numpy.concatenate(features)
+    relativetimestamp = numpy.mean(channels[:,17])       
+    systemtime = channels[:,-1][-1]
+    eegfeatures = numpy.concatenate((features, relativetimestamp, systemtime))
+    return eegfeatures
 
 def process_facereader(segment):
     segment = [line.replace(",",".").strip().split("    ") for line in segment]
@@ -185,7 +239,7 @@ def main():
     log = []
     easy_time = 0
     hard_time = 0
-
+    eeg_log = []
     print "Ready to start"
     while filepath not in os.listdir(logpath):
         time.sleep(5)
@@ -194,14 +248,18 @@ def main():
             while True:
                 segment = opened_file.readlines()
                 face_segment = face_file.readlines()
+                eeg_segment = eeg_file.readlines()
                 if len(face_segment) > 1:
                     face_segment = process_facereader(face_segment)
+                if len(eeg_segment) > 1:
+                    eeg_segment = process_eeg(eeg_segment)
+                    eeg_log.append(eeg_segment)
                 if len(segment) > 1:
                     #print segment[0], segment[-1]
-                    segment = text_to_array(log,segment,face_segment)
+                    segment = text_to_array(log,segment,face_segment, eeg_segment)
                     log.append(segment)
                     print segment.shape, segment[0][-1], segment[-1][-1], segment.dtype
-                    decision = classification(log, knnClassifier, rfClassifier)
+                    decision = classification(log, knnClassifier, rfClassifier, eeg_segment)
                     write_back(decision,segment[-1][-1])
                 elif len(log) > 1:
                     print "Log saved, ready to quit"
@@ -212,10 +270,10 @@ def main():
                         easy_time = opened_easy.read()
                     with open(os.path.join(logpath,hardpath),"r") as opened_hard:
                         hard_time = opened_hard.read()
-                    rfClassifier = train(log, easy_time, hard_time)
+                    rfClassifier = train(log, easy_time, hard_time, eeg_log)
                     trained = True
 
-                time.sleep(2)
+                time.sleep(20)
 
 
 main()
